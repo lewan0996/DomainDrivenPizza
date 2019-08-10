@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -8,6 +8,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Application.Delivery\Application.Delivery.csproj" />
+    <ProjectReference Include="..\..\Application\Application.Ordering\Application.Ordering.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.Delivery\Domain.Delivery.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.Menu\Domain.Menu.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.Ordering\Domain.Ordering.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Delivery\Infrastructure.Delivery.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Menu\Infrastructure.Menu.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Ordering\Infrastructure.Ordering.csproj" />
   </ItemGroup>
 
 </Project>

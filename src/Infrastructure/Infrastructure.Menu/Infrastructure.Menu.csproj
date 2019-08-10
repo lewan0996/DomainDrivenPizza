@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190810161014_Init.cs" />
+    <Compile Remove="Migrations\20190810161014_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810163339_Init.cs" />
+    <Compile Remove="Migrations\20190810163339_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810164323_Init.cs" />
+    <Compile Remove="Migrations\20190810164323_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810164851_Init.cs" />
+    <Compile Remove="Migrations\20190810164851_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810172239_Init.cs" />
+    <Compile Remove="Migrations\20190810172239_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810172930_Init.cs" />
+    <Compile Remove="Migrations\20190810172930_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810175022_Init.cs" />
+    <Compile Remove="Migrations\20190810175022_Init.Designer.cs" />
+    <Compile Remove="Migrations\20190810175912_Init.cs" />
+    <Compile Remove="Migrations\20190810175912_Init.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Domain.Menu\Domain.Menu.csproj" />
+    <ProjectReference Include="..\Infrastructure.Shared\Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
