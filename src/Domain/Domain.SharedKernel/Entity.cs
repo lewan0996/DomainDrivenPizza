@@ -1,11 +1,46 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Domain.SharedKernel
+﻿namespace Domain.SharedKernel
 {
     public abstract class Entity
     {
-        private int? _requestedHashCode;
-        public virtual int Id { get; protected set; }
+        private int _hashCode;
+
+        private int HashCode
+        {
+            get
+            {
+                if (IsTransient())
+                {
+                    return base.GetHashCode();
+                }
+                if (_hashCode == default)
+                {
+                    _hashCode = Id.GetHashCode() ^ 31;
+                }
+
+                return _hashCode;
+            }
+        }
+
+        public int Id { get; protected set; }
+
+        //private List<INotification> _domainEvents;
+        //public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
+        //public void AddDomainEvent(INotification eventItem)
+        //{
+        //    _domainEvents = _domainEvents ?? new List<INotification>();
+        //    _domainEvents.Add(eventItem);
+        //}
+
+        //public void RemoveDomainEvent(INotification eventItem)
+        //{
+        //    _domainEvents?.Remove(eventItem);
+        //}
+
+        //public void ClearDomainEvents()
+        //{
+        //    _domainEvents?.Clear();
+        //}
 
         public bool IsTransient()
         {
@@ -31,18 +66,11 @@ namespace Domain.SharedKernel
             return item.Id == Id;
         }
 
-        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")] // EF requires Id to be non readonly
         public override int GetHashCode()
         {
-            if (IsTransient())
-                return 0;
-
-            if (!_requestedHashCode.HasValue)
-                _requestedHashCode = Id.GetHashCode() ^ 31;
-
-            return _requestedHashCode.Value;
-
+            return HashCode;
         }
+
         public static bool operator ==(Entity left, Entity right)
         {
             return left?.Equals(right) ?? Equals(right, null);

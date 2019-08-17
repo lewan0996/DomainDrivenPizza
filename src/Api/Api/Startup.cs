@@ -1,17 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using Application.Menu.CommandHandlers;
+using Application.Menu.Commands;
+using Application.Menu.Commands.Validations;
+using Application.Shared.Behaviors;
+using AutoMapper;
+using Domain.Menu.ProductAggregate;
+using Domain.SharedKernel;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Infrastructure.Menu;
+using Infrastructure.Shared;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+#pragma warning disable 1591
 
-namespace DomainDrivenPizza.Api
+namespace Api
 {
     public class Startup
     {
@@ -25,7 +35,14 @@ namespace DomainDrivenPizza.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCustomMvc()
+                .AddCustomDbContext(Configuration)
+                .AddCustomSwagger(Configuration)
+                .AddAutoMapper(Assembly.GetExecutingAssembly())
+                .AddCustomMediatR()
+                .AddTransient<IProductRepository, ProductRepository>()
+                .AddTransient<IUnitOfWork>(c => new EFUnitOfWork(c.GetRequiredService<MenuDbContext>()))
+                .AddTransient<IValidator<CreateIngredientCommand>, CreateIngredientCommandValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +59,87 @@ namespace DomainDrivenPizza.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "KIM API V1");
+                });
+
+            var swaggerRewriteOptions = new RewriteOptions();
+            swaggerRewriteOptions.AddRedirect("^$", "swagger");
+            app.UseRewriter(swaggerRewriteOptions);
+
             app.UseMvc();
+        }
+    }
+
+    internal static class CustomExtensionsMethods
+    {
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
+        {
+            services.AddMvc( /*options => { options.Filters.Add(typeof(HttpGlobalExceptionFilter)); }*/)
+                .AddFluentValidation(fv =>
+                    fv.RegisterValidatorsFromAssemblyContaining<CreateIngredientCommandValidator>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddControllersAsServices();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<MenuDbContext>(options =>
+                    {
+                        options.UseSqlServer(configuration.GetConnectionString("SqlServer"),
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(MenuDbContext).GetTypeInfo().Assembly.GetName()
+                                    .Name);
+                            });
+                    }
+                );
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                {
+                    Title = "DomainDrivenPizza API",
+                    Version = "v1",
+                    Description = "The DomainDrivenPizza API",
+                    TermsOfService = "Terms Of Service"
+                });
+                options.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomMediatR(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+            services.AddMediatR(Assembly.GetAssembly(typeof(CreateIngredientCommandHandler)));
+
+            return services;
         }
     }
 }

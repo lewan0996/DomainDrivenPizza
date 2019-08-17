@@ -7,6 +7,7 @@
         Salad = 2,
         Dessert = 3,
         Sauce = 4,
-        Other = 5
+        Ingredient = 5,
+        Other = 6
     }
 }
