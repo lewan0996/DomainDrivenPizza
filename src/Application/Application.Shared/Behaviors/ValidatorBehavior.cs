@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Shared.Extensions;
-using Domain.Menu.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -38,9 +37,7 @@ namespace Application.Shared.Behaviors
             _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}",
                 typeName, request, failures);
 
-            throw new MenuDomainException(
-                $"Command Validation Errors for type {typeof(TRequest).Name}",
-                new ValidationException("Validation exception", failures));
+            throw new ValidationException($"Command Validation Errors for type {typeof(TRequest).Name}", failures);
         }
     }
 }

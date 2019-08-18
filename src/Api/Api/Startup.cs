@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Reflection;
-using Application.Menu.CommandHandlers;
-using Application.Menu.Commands;
+using Api.AutofacModules;
 using Application.Menu.Commands.Validations;
-using Application.Shared.Behaviors;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using Domain.Menu.ProductAggregate;
-using Domain.SharedKernel;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Menu;
-using Infrastructure.Shared;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,16 +28,20 @@ namespace Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddCustomMvc()
                 .AddCustomDbContext(Configuration)
                 .AddCustomSwagger(Configuration)
-                .AddAutoMapper(Assembly.GetExecutingAssembly())
-                .AddCustomMediatR()
-                .AddTransient<IProductRepository, ProductRepository>()
-                .AddTransient<IUnitOfWork>(c => new EFUnitOfWork(c.GetRequiredService<MenuDbContext>()))
-                .AddTransient<IValidator<CreateIngredientCommand>, CreateIngredientCommandValidator>();
+                .AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            var autofacContainerBuilder = new ContainerBuilder();
+            autofacContainerBuilder.Populate(services);
+
+            autofacContainerBuilder.RegisterModule<MediatorModule>();
+            autofacContainerBuilder.RegisterModule<ApplicationModule>();
+
+            return new AutofacServiceProvider(autofacContainerBuilder.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,8 +78,6 @@ namespace Api
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             services.AddMvc( /*options => { options.Filters.Add(typeof(HttpGlobalExceptionFilter)); }*/)
-                .AddFluentValidation(fv =>
-                    fv.RegisterValidatorsFromAssemblyContaining<CreateIngredientCommandValidator>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices();
 
@@ -128,16 +125,6 @@ namespace Api
                 });
                 options.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\{Assembly.GetExecutingAssembly().GetName().Name}.xml");
             });
-
-            return services;
-        }
-
-        public static IServiceCollection AddCustomMediatR(this IServiceCollection services)
-        {
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
-            services.AddMediatR(Assembly.GetAssembly(typeof(CreateIngredientCommandHandler)));
 
             return services;
         }
