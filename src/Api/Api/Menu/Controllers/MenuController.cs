@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Application.Menu.Commands;
 using Application.Menu.Queries.DTO;
 using AutoMapper;
-using Domain.Menu.ProductAggregate;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+#pragma warning disable 1591
 
 namespace Api.Menu.Controllers
 {
@@ -24,9 +24,17 @@ namespace Api.Menu.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public ActionResult Get(int id)
+        {
+            return Ok(new IngredientDto());
+        }
+
         [HttpPost("Ingredients")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Ingredient), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.Created)]
         public async Task<ActionResult> Create([FromBody] IngredientDto ingredientDto)
         {
             var command = _mapper.Map<CreateIngredientCommand>(ingredientDto);
@@ -41,7 +49,7 @@ namespace Api.Menu.Controllers
                 return BadRequest(exception.Errors);
             }
 
-            return Ok(result);
+            return CreatedAtAction(nameof(Get), result.Id, result);
         }
     }
 }
