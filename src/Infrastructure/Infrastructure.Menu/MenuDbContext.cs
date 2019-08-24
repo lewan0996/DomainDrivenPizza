@@ -37,7 +37,6 @@ namespace Infrastructure.Menu
                 .Build();
                     
             var builder = new DbContextOptionsBuilder<MenuDbContext>();
-
             
             var connectionString = configuration.GetConnectionString("SqlServer");
             builder.UseSqlServer(connectionString);

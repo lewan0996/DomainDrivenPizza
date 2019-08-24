@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using Domain.SharedKernel;
 
 namespace Domain.Menu.ProductAggregate
@@ -35,13 +34,20 @@ namespace Domain.Menu.ProductAggregate
 
         public void AddToWarehouse(int quantity)
         {
-            Contract.Requires<ArgumentException>(quantity > 0);
+            if (quantity <= 0)
+            {
+                throw new ArgumentException("The quantity of the product must be greater than 0", nameof(quantity));
+            }
+            
             _availableQuantity += quantity;
         }
 
         public void TakeFromWarehouse(int quantity)
         {
-            Contract.Requires<ArgumentException>(quantity > 0);
+            if (quantity <= 0)
+            {
+                throw new ArgumentException("The quantity of the product must be greater than 0", nameof(quantity));
+            }
             _availableQuantity -= quantity;
         }
     }

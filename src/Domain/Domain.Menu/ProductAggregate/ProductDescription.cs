@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using Domain.SharedKernel;
 
 namespace Domain.Menu.ProductAggregate
@@ -12,8 +11,11 @@ namespace Domain.Menu.ProductAggregate
 
         public ProductDescription(string value)
         {
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(value),
-                "Product description can't be empty.");
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Product description can't be empty.", nameof(value));
+            }
+
             _value = value;
         }
 

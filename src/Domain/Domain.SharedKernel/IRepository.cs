@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.SharedKernel
 {
@@ -6,5 +7,6 @@ namespace Domain.SharedKernel
     {
         Task Add(T item);
         Task<T> GetById(int id);
+        Task<IReadOnlyList<T>> GetAll();
     }
 }

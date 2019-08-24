@@ -1,8 +1,10 @@
-﻿using Autofac;
+﻿using Application.Menu.Queries;
+using Autofac;
 using Domain.Menu.ProductAggregate;
 using Domain.SharedKernel;
 using Infrastructure.Menu;
 using Infrastructure.Shared;
+#pragma warning disable 1591
 
 namespace Api.AutofacModules
 {
@@ -10,12 +12,16 @@ namespace Api.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ProductRepository>()
-                .As<IProductRepository>()
-                .InstancePerLifetimeScope();
-
             builder.Register(c => new EFUnitOfWork(c.Resolve<MenuDbContext>())) //todo Use reflection to pass all dbcontexts
                 .As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<IngredientRepository>()
+                .As(typeof(IRepository<Ingredient>))
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<ProductQueries>()
+                .AsSelf()
                 .InstancePerLifetimeScope();
         }
     }

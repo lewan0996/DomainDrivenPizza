@@ -9,8 +9,8 @@ namespace Domain.Menu.ProductAggregate
         private CrustType _crustType;
         public CrustType CrustType => _crustType;
 
-        private List<Ingredient> _ingredients;
-        public IReadOnlyList<Ingredient> Ingredients => _ingredients;
+        private List<PizzaIngredient> _ingredients;
+        public IReadOnlyList<PizzaIngredient> Ingredients => _ingredients;
 
         public Pizza()
         {

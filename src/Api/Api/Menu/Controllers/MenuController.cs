@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Application.Menu.Commands;
+using Application.Menu.Queries;
 using Application.Menu.Queries.DTO;
 using AutoMapper;
 using FluentValidation;
@@ -17,19 +19,33 @@ namespace Api.Menu.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly ProductQueries _productQueries;
 
-        public MenuController(IMediator mediator, IMapper mapper)
+        public MenuController(IMediator mediator, IMapper mapper, ProductQueries productQueries)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _productQueries = productQueries;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("Ingredients")]
+        [ProducesResponseType(typeof(IReadOnlyList<IngredientDto>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetAllIngredients()
+        {
+            return Ok(await _productQueries.GetAllIngredientsAsync());
+        }
+
+        [HttpGet("Ingredients/{id}")]
         [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            return Ok(new IngredientDto());
+            var ingredient = await _productQueries.GetIngredientByIdAsync(id);
+            if (ingredient == null)
+            {
+                return NotFound();
+            }
+            return Ok(ingredient);
         }
 
         [HttpPost("Ingredients")]
@@ -49,7 +65,7 @@ namespace Api.Menu.Controllers
                 return BadRequest(exception.Errors);
             }
 
-            return CreatedAtAction(nameof(Get), result.Id, result);
+            return CreatedAtAction(nameof(Get), new {result.Id}, result);
         }
-    }
+}
 }

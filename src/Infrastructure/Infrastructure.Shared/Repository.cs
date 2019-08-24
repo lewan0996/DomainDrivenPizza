@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Domain.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,11 @@ namespace Infrastructure.Shared
         public async Task<T> GetById(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<IReadOnlyList<T>> GetAll()
+        {
+            return await _dbContext.Set<T>().ToListAsync();
         }
     }
 }

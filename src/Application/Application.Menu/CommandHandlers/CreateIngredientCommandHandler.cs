@@ -11,14 +11,14 @@ namespace Application.Menu.CommandHandlers
 {
     public class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, IngredientDto>
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IRepository<Ingredient> _ingredientRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateIngredientCommandHandler(IProductRepository productRepository, IUnitOfWork unitOfWork,
+        public CreateIngredientCommandHandler(IRepository<Ingredient> ingredientRepository, IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            _productRepository = productRepository;
+            _ingredientRepository = ingredientRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -38,7 +38,7 @@ namespace Application.Menu.CommandHandlers
                 request.AvailableQuantity
             );
 
-            await _productRepository.Add(ingredient);
+            await _ingredientRepository.Add(ingredient);
             await _unitOfWork.SaveEntitiesAsync();
 
             return _mapper.Map<IngredientDto>(ingredient);

@@ -20,39 +20,62 @@ namespace Infrastructure.Menu.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
+                    Type = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: false),
                     UnitPrice = table.Column<float>(nullable: false),
                     AvailableQuantity = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     IsSpicy = table.Column<bool>(nullable: true),
                     IsVegetarian = table.Column<bool>(nullable: true),
                     IsVegan = table.Column<bool>(nullable: true),
-                    PizzaId = table.Column<int>(nullable: true),
                     CrustType = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PizzaIngredient",
+                schema: "Menu",
+                columns: table => new
+                {
+                    PizzaId = table.Column<int>(nullable: false),
+                    IngredientId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PizzaIngredient", x => new { x.PizzaId, x.IngredientId });
                     table.ForeignKey(
-                        name: "FK_Products_Products_PizzaId",
-                        column: x => x.PizzaId,
+                        name: "FK_PizzaIngredient_Products_IngredientId",
+                        column: x => x.IngredientId,
                         principalSchema: "Menu",
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PizzaIngredient_Products_PizzaId",
+                        column: x => x.PizzaId,
+                        principalSchema: "Menu",
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_PizzaId",
+                name: "IX_PizzaIngredient_IngredientId",
                 schema: "Menu",
-                table: "Products",
-                column: "PizzaId");
+                table: "PizzaIngredient",
+                column: "IngredientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "PizzaIngredient",
+                schema: "Menu");
+
             migrationBuilder.DropTable(
                 name: "Products",
                 schema: "Menu");

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using Domain.SharedKernel;
 
 namespace Domain.Menu.ProductAggregate
@@ -12,8 +11,10 @@ namespace Domain.Menu.ProductAggregate
 
         public ProductName(string value)
         {
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(value),
-                "Product name can't be empty.");
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Product name can't be empty.", nameof(value));
+            }
 
             _value = value;
         }
@@ -23,7 +24,7 @@ namespace Domain.Menu.ProductAggregate
         }
         protected override IEnumerable<object> GetAtomicValues()
         {
-            return new[] {_value};
+            return new[] { _value };
         }
     }
 }
