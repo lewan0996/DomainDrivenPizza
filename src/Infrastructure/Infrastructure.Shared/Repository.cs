@@ -18,7 +18,7 @@ namespace Infrastructure.Shared
             await _dbContext.Set<T>().AddAsync(item);
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
@@ -26,6 +26,11 @@ namespace Infrastructure.Shared
         public async Task<IReadOnlyList<T>> GetAll()
         {
             return await _dbContext.Set<T>().ToListAsync();
+        }
+
+        public void Delete(T item)
+        {
+            _dbContext.Set<T>().Remove(item);
         }
     }
 }

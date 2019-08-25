@@ -18,15 +18,15 @@ namespace Application.Menu.Queries
             _mapper = mapper;
         }
 
-        public async Task<IngredientDto> GetIngredientByIdAsync(int id)
+        public async Task<IngredientDTO> GetIngredientByIdAsync(int id)
         {
-            return _mapper.Map<IngredientDto>(await _ingredientRepository.GetById(id));
+            return _mapper.Map<IngredientDTO>(await _ingredientRepository.GetByIdAsync(id));
         }
 
-        public async Task<IReadOnlyList<IngredientDto>> GetAllIngredientsAsync()
+        public async Task<IReadOnlyList<IngredientDTO>> GetAllIngredientsAsync()
         {
             return (await _ingredientRepository.GetAll())
-                .Select(i => _mapper.Map<IngredientDto>(i))
+                .Select(i => _mapper.Map<IngredientDTO>(i))
                 .ToList();
         }
     }

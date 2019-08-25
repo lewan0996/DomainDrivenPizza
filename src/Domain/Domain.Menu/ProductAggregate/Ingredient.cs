@@ -1,4 +1,8 @@
-﻿namespace Domain.Menu.ProductAggregate
+﻿// ReSharper disable ConvertToAutoProperty
+// ReSharper disable FieldCanBeMadeReadOnly.Local
+// ReSharper disable ConvertToAutoPropertyWithPrivateSetter
+#pragma warning disable IDE0044 // Add readonly modifier
+namespace Domain.Menu.ProductAggregate
 {
     public class Ingredient : Product
     {
@@ -13,6 +17,7 @@
 
         public override ProductType Type => ProductType.Ingredient;
 
+        // ReSharper disable once UnusedMember.Global
         public Ingredient()
         {
         }
@@ -23,6 +28,21 @@
         {
             _isSpicy = isSpicy;
             _isVegetarian = isVegetarian;
+            _isVegan = isVegan;
+        }
+
+        public void SetSpiciness(bool isSpicy)
+        {
+            _isSpicy = isSpicy;
+        }
+
+        public void SetVegetarianism(bool isVegetarian)
+        {
+            _isVegetarian = isVegetarian;
+        }
+
+        public void SetVegan(bool isVegan)
+        {
             _isVegan = isVegan;
         }
     }

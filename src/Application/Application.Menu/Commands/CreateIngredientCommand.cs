@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Menu.Commands
 {
-    public class CreateIngredientCommand : IRequest<IngredientDto>
+    public class CreateIngredientCommand : IRequest<IngredientDTO>
     {
         public string Name { get; }
         public string Description { get; }

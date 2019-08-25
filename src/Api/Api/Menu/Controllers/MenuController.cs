@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Api.Menu.DTO;
 using Application.Menu.Commands;
+using Application.Menu.Exceptions;
 using Application.Menu.Queries;
 using Application.Menu.Queries.DTO;
 using AutoMapper;
@@ -29,16 +31,16 @@ namespace Api.Menu.Controllers
         }
 
         [HttpGet("Ingredients")]
-        [ProducesResponseType(typeof(IReadOnlyList<IngredientDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IReadOnlyList<IngredientDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetAllIngredients()
         {
             return Ok(await _productQueries.GetAllIngredientsAsync());
         }
 
         [HttpGet("Ingredients/{id}")]
-        [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IngredientDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> GetIngredient(int id)
         {
             var ingredient = await _productQueries.GetIngredientByIdAsync(id);
             if (ingredient == null)
@@ -50,12 +52,12 @@ namespace Api.Menu.Controllers
 
         [HttpPost("Ingredients")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(IngredientDto), (int)HttpStatusCode.Created)]
-        public async Task<ActionResult> Create([FromBody] IngredientDto ingredientDto)
+        [ProducesResponseType(typeof(IngredientDTO), (int)HttpStatusCode.Created)]
+        public async Task<ActionResult> CreateIngredient([FromBody] CreateIngredientDTO ingredientDto)
         {
             var command = _mapper.Map<CreateIngredientCommand>(ingredientDto);
 
-            IngredientDto result;
+            IngredientDTO result;
             try
             {
                 result = await _mediator.Send(command);
@@ -65,7 +67,45 @@ namespace Api.Menu.Controllers
                 return BadRequest(exception.Errors);
             }
 
-            return CreatedAtAction(nameof(Get), new {result.Id}, result);
+            return CreatedAtAction(nameof(GetIngredient), new { result.Id }, result);
         }
-}
+
+        [HttpDelete("Ingredient/{id}")]
+        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int) HttpStatusCode.NotFound)]
+        public async Task<ActionResult> DeleteIngredient(int id)
+        {
+            var command = new DeleteIngredientCommand(id);
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (RecordNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPatch("Ingredients/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> UpdateIngredient(UpdateIngredientDTO dto)
+        {
+            var command = _mapper.Map<UpdateIngredientCommand>(dto);
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (RecordNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+    }
 }

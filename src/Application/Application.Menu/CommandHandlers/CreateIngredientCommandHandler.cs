@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.Menu.CommandHandlers
 {
-    public class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, IngredientDto>
+    public class CreateIngredientCommandHandler : IRequestHandler<CreateIngredientCommand, IngredientDTO>
     {
         private readonly IRepository<Ingredient> _ingredientRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -23,7 +23,7 @@ namespace Application.Menu.CommandHandlers
             _mapper = mapper;
         }
 
-        public async Task<IngredientDto> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
+        public async Task<IngredientDTO> Handle(CreateIngredientCommand request, CancellationToken cancellationToken)
         {
             var name = new ProductName(request.Name);
             var description = new ProductDescription(request.Description);
@@ -41,7 +41,7 @@ namespace Application.Menu.CommandHandlers
             await _ingredientRepository.Add(ingredient);
             await _unitOfWork.SaveEntitiesAsync();
 
-            return _mapper.Map<IngredientDto>(ingredient);
+            return _mapper.Map<IngredientDTO>(ingredient);
         }
     }
 }
