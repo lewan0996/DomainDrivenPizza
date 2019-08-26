@@ -1,7 +1,7 @@
 ﻿// ReSharper disable ConvertToAutoProperty
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 // ReSharper disable ConvertToAutoPropertyWithPrivateSetter
-#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0044 // AddAsync readonly modifier
 namespace Domain.Menu.ProductAggregate
 {
     public class Ingredient : Product

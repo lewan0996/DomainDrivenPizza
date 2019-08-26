@@ -29,7 +29,7 @@
         //public void AddDomainEvent(INotification eventItem)
         //{
         //    _domainEvents = _domainEvents ?? new List<INotification>();
-        //    _domainEvents.Add(eventItem);
+        //    _domainEvents.AddAsync(eventItem);
         //}
 
         //public void RemoveDomainEvent(INotification eventItem)

@@ -4,7 +4,7 @@ using Domain.SharedKernel;
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable ConvertToAutoPropertyWhenPossible
-#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0044 // AddAsync readonly modifier
 namespace Domain.Menu.ProductAggregate
 {
     public class Product : AggregateRoot

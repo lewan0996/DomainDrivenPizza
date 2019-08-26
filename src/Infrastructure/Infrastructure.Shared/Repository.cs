@@ -13,7 +13,7 @@ namespace Infrastructure.Shared
         {
             _dbContext = dbContext;
         }
-        public async Task Add(T item)
+        public async Task AddAsync(T item)
         {
             await _dbContext.Set<T>().AddAsync(item);
         }

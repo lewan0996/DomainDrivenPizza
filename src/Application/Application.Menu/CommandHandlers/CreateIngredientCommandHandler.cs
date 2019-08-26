@@ -38,7 +38,7 @@ namespace Application.Menu.CommandHandlers
                 request.AvailableQuantity
             );
 
-            await _ingredientRepository.Add(ingredient);
+            await _ingredientRepository.AddAsync(ingredient);
             await _unitOfWork.SaveEntitiesAsync();
 
             return _mapper.Map<IngredientDTO>(ingredient);

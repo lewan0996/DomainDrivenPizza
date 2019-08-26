@@ -2,7 +2,7 @@
 // ReSharper disable ConvertToAutoProperty
 // ReSharper disable CollectionNeverUpdated.Local
 #pragma warning disable 649
-#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0044 // AddAsync readonly modifier
 namespace Domain.Menu.ProductAggregate
 {
     public class Pizza : Product
@@ -19,6 +19,19 @@ namespace Domain.Menu.ProductAggregate
         // ReSharper disable once EmptyConstructor
         public Pizza()
         {
+        }
+
+        public Pizza(ProductName name, ProductDescription description, float unitPrice, int availableQuantity,
+            CrustType crustType) : base(name, description, ProductType.Pizza, unitPrice, availableQuantity)
+        {
+            _crustType = crustType;
+            _ingredients = new List<PizzaIngredient>();
+        }
+
+        public void AddIngredient(Ingredient ingredient)
+        {
+            var pizzaIngredient = new PizzaIngredient(this, ingredient);
+            _ingredients.Add(pizzaIngredient);
         }
     }
 }

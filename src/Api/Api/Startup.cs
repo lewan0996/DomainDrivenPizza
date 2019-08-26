@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using Api.AutofacModules;
-using Application.Menu.Commands.Validations;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using FluentValidation.AspNetCore;
 using Infrastructure.Menu;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -77,7 +75,7 @@ namespace Api
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
-            services.AddMvc( /*options => { options.Filters.Add(typeof(HttpGlobalExceptionFilter)); }*/)
+            services.AddMvc( /*options => { options.Filters.AddAsync(typeof(HttpGlobalExceptionFilter)); }*/)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices();
 

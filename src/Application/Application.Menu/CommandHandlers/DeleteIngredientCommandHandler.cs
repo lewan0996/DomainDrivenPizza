@@ -22,7 +22,7 @@ namespace Application.Menu.CommandHandlers
             var ingredientToDelete = await _ingredientRepository.GetByIdAsync(request.Id);
             if (ingredientToDelete == null)
             {
-                throw new RecordNotFoundException();
+                throw new RecordNotFoundException(request.Id);
             }
 
             _ingredientRepository.Delete(ingredientToDelete);

@@ -22,7 +22,7 @@ namespace Application.Menu.CommandHandlers
 
             if (ingredientToUpdate == null)
             {
-                throw new RecordNotFoundException();
+                throw new RecordNotFoundException(request.Id);
             }
 
             if (request.Name != null)

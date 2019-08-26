@@ -17,30 +17,30 @@ namespace Api.Menu.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class MenuController : ControllerBase
+    public class IngredientsController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly ProductQueries _productQueries;
 
-        public MenuController(IMediator mediator, IMapper mapper, ProductQueries productQueries)
+        public IngredientsController(IMediator mediator, IMapper mapper, ProductQueries productQueries)
         {
             _mediator = mediator;
             _mapper = mapper;
             _productQueries = productQueries;
         }
 
-        [HttpGet("Ingredients")]
+        [HttpGet]
         [ProducesResponseType(typeof(IReadOnlyList<IngredientDTO>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetAllIngredients()
+        public async Task<ActionResult> GetAll()
         {
             return Ok(await _productQueries.GetAllIngredientsAsync());
         }
 
-        [HttpGet("Ingredients/{id}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(IngredientDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> GetIngredient(int id)
+        public async Task<ActionResult> Get(int id)
         {
             var ingredient = await _productQueries.GetIngredientByIdAsync(id);
             if (ingredient == null)
@@ -50,10 +50,10 @@ namespace Api.Menu.Controllers
             return Ok(ingredient);
         }
 
-        [HttpPost("Ingredients")]
+        [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(IngredientDTO), (int)HttpStatusCode.Created)]
-        public async Task<ActionResult> CreateIngredient([FromBody] CreateIngredientDTO ingredientDto)
+        public async Task<ActionResult> Create([FromBody] CreateIngredientDTO ingredientDto)
         {
             var command = _mapper.Map<CreateIngredientCommand>(ingredientDto);
 
@@ -67,13 +67,13 @@ namespace Api.Menu.Controllers
                 return BadRequest(exception.Errors);
             }
 
-            return CreatedAtAction(nameof(GetIngredient), new { result.Id }, result);
+            return CreatedAtAction(nameof(Get), new { result.Id }, result);
         }
 
-        [HttpDelete("Ingredient/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType((int) HttpStatusCode.NoContent)]
         [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        public async Task<ActionResult> DeleteIngredient(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var command = new DeleteIngredientCommand(id);
 
@@ -89,10 +89,10 @@ namespace Api.Menu.Controllers
             return NoContent();
         }
 
-        [HttpPatch("Ingredients/{id}")]
+        [HttpPatch("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> UpdateIngredient(UpdateIngredientDTO dto)
+        public async Task<ActionResult> Update(UpdateIngredientDTO dto)
         {
             var command = _mapper.Map<UpdateIngredientCommand>(dto);
 

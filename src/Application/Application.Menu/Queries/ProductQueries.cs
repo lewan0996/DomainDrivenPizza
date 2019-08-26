@@ -11,11 +11,15 @@ namespace Application.Menu.Queries
     public class ProductQueries
     {
         private readonly IRepository<Ingredient> _ingredientRepository;
+        private readonly IRepository<Pizza> _pizzaRepository;
         private readonly IMapper _mapper;
-        public ProductQueries(IRepository<Ingredient> ingredientRepository, IMapper mapper)
+
+        public ProductQueries(IRepository<Ingredient> ingredientRepository, IMapper mapper,
+            IRepository<Pizza> pizzaRepository)
         {
             _ingredientRepository = ingredientRepository;
             _mapper = mapper;
+            _pizzaRepository = pizzaRepository;
         }
 
         public async Task<IngredientDTO> GetIngredientByIdAsync(int id)
@@ -27,6 +31,19 @@ namespace Application.Menu.Queries
         {
             return (await _ingredientRepository.GetAll())
                 .Select(i => _mapper.Map<IngredientDTO>(i))
+                .ToList();
+        }
+
+        public async Task<PizzaDTO> GetPizzaByIdAsync(int id)
+        {
+            var pizza = await _pizzaRepository.GetByIdAsync(id);
+            return _mapper.Map<PizzaDTO>(pizza);
+        }
+
+        public async Task<IReadOnlyList<PizzaDTO>> GetAllPizzasAsync()
+        {
+            return (await _pizzaRepository.GetAll())
+                .Select(p => _mapper.Map<PizzaDTO>(p))
                 .ToList();
         }
     }
