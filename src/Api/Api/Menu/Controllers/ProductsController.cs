@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Menu.DTO.PizzaDTO;
-using Application.Menu.Commands.PizzaCommands;
+using Api.Menu.DTO.ProductDTO;
+using Application.Menu.Commands.ProductCommands;
 using Application.Menu.Exceptions;
 using Application.Menu.Queries;
 using Application.Menu.Queries.DTO;
@@ -16,13 +16,13 @@ namespace Api.Menu.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PizzasController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly ProductQueries _productQueries;
 
-        public PizzasController(IMediator mediator, IMapper mapper, ProductQueries productQueries)
+        public ProductsController(IMediator mediator, IMapper mapper, ProductQueries productQueries)
         {
             _mediator = mediator;
             _mapper = mapper;
@@ -30,33 +30,33 @@ namespace Api.Menu.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IReadOnlyList<PizzaDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IReadOnlyList<ProductDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> GetAll()
         {
-            return Ok(await _productQueries.GetAllPizzasAsync());
+            return Ok(await _productQueries.GetAllProductsAsync());
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(PizzaDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProductDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> Get(int id)
         {
-            var pizza = await _productQueries.GetPizzaByIdAsync(id);
-            if (pizza == null)
+            var product = await _productQueries.GetProductByIdAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return Ok(pizza);
+            return Ok(product);
         }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(PizzaDTO), (int)HttpStatusCode.Created)]
-        public async Task<ActionResult> Create([FromBody] CreatePizzaDTO pizzaDto)
+        [ProducesResponseType(typeof(ProductDTO), (int)HttpStatusCode.Created)]
+        public async Task<ActionResult> Create([FromBody] CreateProductDTO ingredientDto)
         {
-            var command = _mapper.Map<CreatePizzaCommand>(pizzaDto);
+            var command = _mapper.Map<CreateProductCommand>(ingredientDto);
 
-            PizzaDTO result;
+            ProductDTO result;
             try
             {
                 result = await _mediator.Send(command);
@@ -70,11 +70,11 @@ namespace Api.Menu.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
-        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<ActionResult> Delete(int id)
         {
-            var command = new DeletePizzaCommand(id);
+            var command = new DeleteProductCommand(id);
 
             try
             {
@@ -91,9 +91,9 @@ namespace Api.Menu.Controllers
         [HttpPatch("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> Update(int id, UpdatePizzaDTO dto)
+        public async Task<ActionResult> Update(int id, UpdateProductDTO dto)
         {
-            var command = _mapper.Map<UpdatePizzaCommand>(dto);
+            var command = _mapper.Map<UpdateProductCommand>(dto);
             command.Id = id;
 
             try

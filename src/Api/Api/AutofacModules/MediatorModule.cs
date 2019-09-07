@@ -1,9 +1,10 @@
-﻿using Application.Menu.Commands;
-using Application.Menu.Commands.Validations;
+﻿using Application.Menu.Commands.IngredientCommands;
+using Application.Menu.Commands.Validations.IngredientCommandValidatiors;
 using Application.Shared.Behaviors;
 using Autofac;
 using FluentValidation;
 using MediatR;
+#pragma warning disable 1591
 
 namespace Api.AutofacModules
 {
@@ -25,7 +26,7 @@ namespace Api.AutofacModules
             builder.Register<ServiceFactory>(context =>
             {
                 var componentContext = context.Resolve<IComponentContext>();
-                return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
+                return t => componentContext.TryResolve(t, out var o) ? o : null;
             });
 
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));

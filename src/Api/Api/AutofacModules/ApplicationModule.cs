@@ -24,6 +24,10 @@ namespace Api.AutofacModules
                 .As(typeof(IRepository<Pizza>))
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<ProductRepository>()
+                .As(typeof(IRepository<Product>))
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<ProductQueries>()
                 .AsSelf()
                 .InstancePerLifetimeScope();

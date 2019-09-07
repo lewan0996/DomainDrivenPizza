@@ -11,15 +11,29 @@ namespace Application.Menu.Queries
     public class ProductQueries
     {
         private readonly IRepository<Ingredient> _ingredientRepository;
+        private readonly IRepository<Product> _productRepository;
         private readonly IRepository<Pizza> _pizzaRepository;
         private readonly IMapper _mapper;
 
         public ProductQueries(IRepository<Ingredient> ingredientRepository, IMapper mapper,
-            IRepository<Pizza> pizzaRepository)
+            IRepository<Pizza> pizzaRepository, IRepository<Product> productRepository)
         {
             _ingredientRepository = ingredientRepository;
             _mapper = mapper;
             _pizzaRepository = pizzaRepository;
+            _productRepository = productRepository;
+        }
+
+        public async Task<IReadOnlyList<ProductDTO>> GetAllProductsAsync()
+        {
+            return (await _productRepository.GetAll())
+                .Select(i => _mapper.Map<ProductDTO>(i))
+                .ToList();
+        }
+
+        public async Task<ProductDTO> GetProductByIdAsync(int id)
+        {
+            return _mapper.Map<ProductDTO>(await _productRepository.GetByIdAsync(id));
         }
 
         public async Task<IngredientDTO> GetIngredientByIdAsync(int id)

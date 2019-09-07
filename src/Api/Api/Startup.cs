@@ -77,7 +77,12 @@ namespace Api
         {
             services.AddMvc( /*options => { options.Filters.AddAsync(typeof(HttpGlobalExceptionFilter)); }*/)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddControllersAsServices();
+                .AddControllersAsServices()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
 
             services.AddCors(options =>
             {

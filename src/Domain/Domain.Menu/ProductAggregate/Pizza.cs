@@ -21,7 +21,7 @@ namespace Domain.Menu.ProductAggregate
         {
         }
 
-        public Pizza(ProductName name, ProductDescription description, float unitPrice, int availableQuantity,
+        public Pizza(string name, string description, float unitPrice, int availableQuantity,
             CrustType crustType) : base(name, description, ProductType.Pizza, unitPrice, availableQuantity)
         {
             _crustType = crustType;

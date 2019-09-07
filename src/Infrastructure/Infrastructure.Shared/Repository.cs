@@ -13,22 +13,22 @@ namespace Infrastructure.Shared
         {
             _dbContext = dbContext;
         }
-        public async Task AddAsync(T item)
+        public virtual async Task AddAsync(T item)
         {
             await _dbContext.Set<T>().AddAsync(item);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<IReadOnlyList<T>> GetAll()
+        public virtual async Task<IReadOnlyList<T>> GetAll()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public void Delete(T item)
+        public virtual void Delete(T item)
         {
             _dbContext.Set<T>().Remove(item);
         }

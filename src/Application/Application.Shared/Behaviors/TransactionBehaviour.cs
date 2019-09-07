@@ -44,6 +44,7 @@ namespace Application.Shared.Behaviors
 
                     _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}", transaction.Id, typeName);
                     //await _integrationEventService.PublishEventsAsync();
+                    await _unitOfWork.SaveEntitiesAsync();
                     await _unitOfWork.CommitTransactionAsync(transaction);
                 }
 

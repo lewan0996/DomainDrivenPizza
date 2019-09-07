@@ -22,7 +22,7 @@ namespace Domain.Menu.ProductAggregate
         {
         }
 
-        public Ingredient(ProductName name, ProductDescription description, float unitPrice, bool isSpicy,
+        public Ingredient(string name, string description, float unitPrice, bool isSpicy,
             bool isVegetarian, bool isVegan,
             int availableQuantity = 0) : base(name, description, ProductType.Ingredient, unitPrice, availableQuantity)
         {

@@ -1,26 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Menu.ProductAggregate;
-using Domain.SharedKernel;
+using Infrastructure.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Menu
 {
-    public class PizzaRepository : IRepository<Pizza>
+    public class PizzaRepository : Repository<Pizza>
     {
         private readonly MenuDbContext _dbContext;
 
-        public PizzaRepository(MenuDbContext dbContext)
+        public PizzaRepository(MenuDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task AddAsync(Pizza item)
-        {
-            await _dbContext.Pizzas.AddAsync(item);
-        }
-
-        public async Task<Pizza> GetByIdAsync(int id)
+        public override async Task<Pizza> GetByIdAsync(int id)
         {
             var pizza = await _dbContext.Pizzas
                 .Include(p=>p.Ingredients)
@@ -30,17 +25,12 @@ namespace Infrastructure.Menu
             return pizza;
         }
 
-        public async Task<IReadOnlyList<Pizza>> GetAll()
+        public override async Task<IReadOnlyList<Pizza>> GetAll()
         {
             return await _dbContext.Pizzas
                 .Include(p => p.Ingredients)
                 .ThenInclude(pi=>pi.Ingredient)
                 .ToListAsync();
-        }
-
-        public void Delete(Pizza item)
-        {
-            _dbContext.Pizzas.Remove(item);
         }
     }
 }

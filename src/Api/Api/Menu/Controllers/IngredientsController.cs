@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Menu.DTO;
-using Application.Menu.Commands;
+using Api.Menu.DTO.IngredientDTO;
+using Application.Menu.Commands.IngredientCommands;
 using Application.Menu.Exceptions;
 using Application.Menu.Queries;
 using Application.Menu.Queries.DTO;
@@ -92,9 +92,10 @@ namespace Api.Menu.Controllers
         [HttpPatch("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult> Update(UpdateIngredientDTO dto)
+        public async Task<ActionResult> Update(int id, [FromBody]UpdateIngredientDTO dto)
         {
             var command = _mapper.Map<UpdateIngredientCommand>(dto);
+            command.Id = id;
 
             try
             {

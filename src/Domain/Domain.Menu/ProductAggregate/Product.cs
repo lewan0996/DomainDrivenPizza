@@ -28,11 +28,11 @@ namespace Domain.Menu.ProductAggregate
         // ReSharper disable once UnusedMember.Global
         protected Product() { }
 
-        public Product(ProductName name, ProductDescription description, ProductType type, float unitPrice,
+        public Product(string name, string description, ProductType type, float unitPrice,
             int availableQuantity = 0)
         {
-            _name = name;
-            _description = description;
+            _name = new ProductName(name);
+            _description = new ProductDescription(description);
             _type = type;
             _unitPrice = unitPrice;
             _availableQuantity = availableQuantity;
@@ -70,6 +70,16 @@ namespace Domain.Menu.ProductAggregate
         public void SetUnitPrice(float unitPrice)
         {
             _unitPrice = unitPrice;
+        }
+
+        public void SetType(ProductType type)
+        {
+            if (type == ProductType.Pizza || type == ProductType.Ingredient)
+            {
+                throw new ArgumentOutOfRangeException(nameof(type));
+            }
+
+            _type = type;
         }
     }
 }
