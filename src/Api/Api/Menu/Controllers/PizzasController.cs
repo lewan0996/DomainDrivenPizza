@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Api.Menu.DTO;
 using Application.Menu.Commands;
+using Application.Menu.Exceptions;
 using Application.Menu.Queries;
 using Application.Menu.Queries.DTO;
 using AutoMapper;
@@ -66,6 +67,44 @@ namespace Api.Menu.Controllers
             }
 
             return CreatedAtAction(nameof(Get), new { result.Id }, result);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType((int) HttpStatusCode.NotFound)]
+        [ProducesResponseType((int) HttpStatusCode.NoContent)]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var command = new DeletePizzaCommand(id);
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (RecordNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> Update(UpdatePizzaDTO dto)
+        {
+            var command = _mapper.Map<UpdatePizzaCommand>(dto);
+
+            try
+            {
+                await _mediator.Send(command);
+            }
+            catch (RecordNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

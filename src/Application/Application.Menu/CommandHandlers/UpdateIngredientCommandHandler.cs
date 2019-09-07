@@ -27,12 +27,12 @@ namespace Application.Menu.CommandHandlers
 
             if (request.Name != null)
             {
-                ingredientToUpdate.SetName(new ProductName(request.Name));
+                ingredientToUpdate.SetName(request.Name);
             }
 
             if (request.Description != null)
             {
-                ingredientToUpdate.SetDescription(new ProductDescription(request.Description));
+                ingredientToUpdate.SetDescription(request.Description);
             }
 
             if (request.AvailableQuantity.HasValue)

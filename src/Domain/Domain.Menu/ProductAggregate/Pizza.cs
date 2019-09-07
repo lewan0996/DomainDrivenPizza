@@ -33,5 +33,19 @@ namespace Domain.Menu.ProductAggregate
             var pizzaIngredient = new PizzaIngredient(this, ingredient);
             _ingredients.Add(pizzaIngredient);
         }
+
+        public void ReplaceIngredients(IEnumerable<Ingredient> newIngredients)
+        {
+            _ingredients.Clear();
+            foreach (var ingredient in newIngredients)
+            {
+               AddIngredient(ingredient);
+            }
+        }
+
+        public void SetCrustType(CrustType crustType)
+        {
+            _crustType = crustType;
+        }
     }
 }

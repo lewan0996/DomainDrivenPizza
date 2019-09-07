@@ -24,8 +24,7 @@ namespace Application.Menu.CommandHandlers
             _pizzaRepository = pizzaRepository;
             _mapper = mapper;
         }
-
-        //todo try to inherit CreateProductCommandHandler
+        
         public async Task<PizzaDTO> Handle(CreatePizzaCommand request, CancellationToken cancellationToken)
         {
             var name = new ProductName(request.Name);

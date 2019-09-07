@@ -44,7 +44,7 @@ namespace Domain.Menu.ProductAggregate
             {
                 throw new ArgumentException("The quantity of the product must be greater than 0", nameof(quantity));
             }
-            
+
             _availableQuantity += quantity;
         }
 
@@ -57,14 +57,14 @@ namespace Domain.Menu.ProductAggregate
             _availableQuantity -= quantity;
         }
 
-        public void SetName(ProductName name)
+        public void SetName(string name)
         {
-            _name = name;
+            _name = new ProductName(name);
         }
 
-        public void SetDescription(ProductDescription description)
+        public void SetDescription(string description)
         {
-            _description = description;
+            _description = new ProductDescription(description);
         }
 
         public void SetUnitPrice(float unitPrice)
