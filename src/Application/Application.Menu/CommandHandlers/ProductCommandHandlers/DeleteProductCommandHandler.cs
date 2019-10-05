@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Application.Menu.Commands.ProductCommands;
-using Application.Menu.Exceptions;
+using Application.Shared.Exceptions;
 using Domain.Menu.ProductAggregate;
 using Domain.SharedKernel;
 using MediatR;

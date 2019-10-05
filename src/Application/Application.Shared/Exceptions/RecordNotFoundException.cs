@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Menu.Exceptions
+namespace Application.Shared.Exceptions
 {
     public class RecordNotFoundException : Exception
     {

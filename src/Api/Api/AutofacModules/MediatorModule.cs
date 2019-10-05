@@ -1,5 +1,5 @@
 ﻿using Application.Menu.Commands.IngredientCommands;
-using Application.Menu.Commands.Validations.IngredientCommandValidatiors;
+using Application.Menu.Commands.Validations.IngredientCommandValidators;
 using Application.Shared.Behaviors;
 using Autofac;
 using FluentValidation;

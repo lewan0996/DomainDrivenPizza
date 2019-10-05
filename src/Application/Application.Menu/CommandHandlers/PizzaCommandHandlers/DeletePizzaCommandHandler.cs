@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Application.Menu.Commands.PizzaCommands;
-using Application.Menu.Exceptions;
+using Application.Shared.Exceptions;
 using Domain.SharedKernel;
 using MediatR;
 

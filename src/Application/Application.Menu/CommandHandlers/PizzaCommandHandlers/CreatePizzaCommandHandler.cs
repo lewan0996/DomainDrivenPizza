@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Menu.Commands.PizzaCommands;
-using Application.Menu.Exceptions;
 using Application.Menu.Queries.DTO;
+using Application.Shared.Exceptions;
 using AutoMapper;
 using Domain.Menu.ProductAggregate;
 using Domain.SharedKernel;
