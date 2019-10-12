@@ -4,6 +4,7 @@ using Api.AutofacModules;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using Infrastructure.Basket;
 using Infrastructure.Menu;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -109,7 +110,16 @@ namespace Api
                                     .Name);
                             });
                     }
-                );
+                )
+                .AddDbContext<BasketDbContext>(options =>
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("SqlServer"),
+                        sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly(typeof(BasketDbContext).GetTypeInfo().Assembly.GetName()
+                                .Name);
+                        });
+                });
 
             return services;
         }

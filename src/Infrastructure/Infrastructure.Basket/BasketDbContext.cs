@@ -1,46 +1,45 @@
 ﻿using System.IO;
 using System.Reflection;
-using Domain.Menu.ProductAggregate;
+using Domain.Basket.BasketAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.Menu
+namespace Infrastructure.Basket
 {
-    public class MenuDbContext : DbContext
+    public class BasketDbContext : DbContext
     {
-        public MenuDbContext(DbContextOptions options) : base(options)
+        public BasketDbContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Pizza> Pizzas { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Domain.Basket.BasketAggregate.Basket> Baskets { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.HasDefaultSchema("Menu");
-            modelBuilder.ForSqlServerUseSequenceHiLo("MenuHiLoSequence");
+            modelBuilder.HasDefaultSchema("Basket");
+            modelBuilder.ForSqlServerUseSequenceHiLo("BasketHiLoSequence");
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 
-    internal class MenuContextContextFactory : IDesignTimeDbContextFactory<MenuDbContext>
+    internal class BasketContextContextFactory : IDesignTimeDbContextFactory<BasketDbContext>
     {
-        public MenuDbContext CreateDbContext(string[] args)
+        public BasketDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
                     
-            var builder = new DbContextOptionsBuilder<MenuDbContext>();
+            var builder = new DbContextOptionsBuilder<BasketDbContext>();
             
             var connectionString = configuration.GetConnectionString("SqlServer");
             builder.UseSqlServer(connectionString);
             
-            return new MenuDbContext(builder.Options);
+            return new BasketDbContext(builder.Options);
         }
     }
 }

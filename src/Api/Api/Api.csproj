@@ -26,12 +26,18 @@
     <ProjectReference Include="..\..\Application\Application.Delivery\Application.Delivery.csproj" />
     <ProjectReference Include="..\..\Application\Application.Menu\Application.Menu.csproj" />
     <ProjectReference Include="..\..\Application\Application.Ordering\Application.Ordering.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.Basket\Domain.Basket.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Delivery\Domain.Delivery.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Menu\Domain.Menu.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Ordering\Domain.Ordering.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Basket\Infrastructure.Basket.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Delivery\Infrastructure.Delivery.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Menu\Infrastructure.Menu.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Ordering\Infrastructure.Ordering.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Basket\" />
   </ItemGroup>
 
 </Project>

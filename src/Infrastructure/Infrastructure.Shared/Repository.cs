@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Shared
 {
-    public class Repository<T> : IRepository<T> where T : AggregateRoot
+    public class Repository<T, TDbContext> : IRepository<T>
+        where T : AggregateRoot
+        where TDbContext : DbContext
     {
-        private readonly DbContext _dbContext;
+        private readonly TDbContext _dbContext;
 
-        public Repository(DbContext dbContext)
+        public Repository(TDbContext dbContext)
         {
             _dbContext = dbContext;
         }
