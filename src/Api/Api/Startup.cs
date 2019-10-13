@@ -38,7 +38,7 @@ namespace Api
             autofacContainerBuilder.Populate(services);
 
             autofacContainerBuilder.RegisterModule<MediatorModule>();
-            autofacContainerBuilder.RegisterModule<ApplicationModule>();
+            autofacContainerBuilder.RegisterModule(new ApplicationModule(Configuration));
 
             return new AutofacServiceProvider(autofacContainerBuilder.Build());
         }
@@ -103,7 +103,8 @@ namespace Api
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<MenuDbContext>(options =>
                     {
-                        options.UseSqlServer(configuration.GetConnectionString("SqlServer"),
+                        options
+                            .UseSqlServer(configuration.GetConnectionString("SqlServer"),
                             sqlOptions =>
                             {
                                 sqlOptions.MigrationsAssembly(typeof(MenuDbContext).GetTypeInfo().Assembly.GetName()
@@ -113,7 +114,8 @@ namespace Api
                 )
                 .AddDbContext<BasketDbContext>(options =>
                 {
-                    options.UseSqlServer(configuration.GetConnectionString("SqlServer"),
+                    options.UseLazyLoadingProxies()
+                        .UseSqlServer(configuration.GetConnectionString("SqlServer"),
                         sqlOptions =>
                         {
                             sqlOptions.MigrationsAssembly(typeof(BasketDbContext).GetTypeInfo().Assembly.GetName()

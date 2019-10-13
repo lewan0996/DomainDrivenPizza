@@ -9,7 +9,7 @@ namespace Infrastructure.Menu
 {
     public class MenuDbContext : DbContext
     {
-        public MenuDbContext(DbContextOptions options) : base(options)
+        public MenuDbContext(DbContextOptions<MenuDbContext> options) : base(options)
         {
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Domain.Basket.Exceptions;
 using Domain.SharedKernel;
 
@@ -9,13 +10,13 @@ namespace Domain.Basket.BasketAggregate
 #pragma warning disable 649
         private List<BasketItem> _items;
 #pragma warning restore 649
-        public IReadOnlyList<BasketItem> Items => _items;
+        public virtual IReadOnlyList<BasketItem> Items => _items;
 
         public void AddItemToBasket(int productId, int quantity)
         {
             var basketItem = new BasketItem(productId, quantity);
 
-            var productExistsInBasket = _items.Contains(basketItem);
+            var productExistsInBasket = Items.Any(bi => bi.ProductId == productId);
 
             if (productExistsInBasket)
             {

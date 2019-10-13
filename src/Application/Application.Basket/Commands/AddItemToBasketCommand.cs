@@ -1,16 +1,16 @@
-﻿using MediatR;
+﻿using Application.Basket.Queries.DTO;
+using MediatR;
 
 namespace Application.Basket.Commands
 {
-    public class AddItemToBasketCommand : IRequest
+    public class AddItemToBasketCommand : IRequest<BasketDTO>
     {
-        public int BasketId { get; }
+        public int? BasketId { get; set; }
         public int ProductId { get; }
         public int Quantity { get; }
 
-        public AddItemToBasketCommand(int basketId, int productId, int quantity)
+        public AddItemToBasketCommand(int productId, int quantity)
         {
-            BasketId = basketId;
             ProductId = productId;
             Quantity = quantity;
         }

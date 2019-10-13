@@ -10,6 +10,7 @@ namespace Infrastructure.Basket.EntityTypeConfigurations
         {
             builder.Property(bi => bi.ProductId).UsePropertyAccessMode(PropertyAccessMode.Field);
             builder.Property(bi => bi.Quantity).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Property(bi => bi.BasketId).UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

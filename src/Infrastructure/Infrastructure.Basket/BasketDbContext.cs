@@ -9,7 +9,7 @@ namespace Infrastructure.Basket
 {
     public class BasketDbContext : DbContext
     {
-        public BasketDbContext(DbContextOptions options) : base(options)
+        public BasketDbContext(DbContextOptions<BasketDbContext> options) : base(options)
         {
         }
 

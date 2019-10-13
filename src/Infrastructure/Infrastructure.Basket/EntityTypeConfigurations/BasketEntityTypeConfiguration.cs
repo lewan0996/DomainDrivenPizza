@@ -9,6 +9,7 @@ namespace Infrastructure.Basket.EntityTypeConfigurations
         {
             builder.HasMany(b => b.Items)
                 .WithOne()
+                .HasForeignKey(bi => bi.BasketId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }

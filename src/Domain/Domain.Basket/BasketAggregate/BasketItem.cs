@@ -11,11 +11,16 @@ namespace Domain.Basket.BasketAggregate
         private int _quantity;
         public int Quantity => _quantity;
 
+        private int _basketId;
+        public int BasketId => _basketId;
+
         public BasketItem(int productId, int quantity)
         {
             _productId = productId;
             _quantity = quantity;
         }
+
+        protected BasketItem() { }
 
         public void SetQuantity(int quantity)
         {

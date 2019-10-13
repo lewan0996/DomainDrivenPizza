@@ -1,4 +1,6 @@
-﻿using Application.Menu.Commands.IngredientCommands;
+﻿using Application.Basket.Commands;
+using Application.Basket.Validations;
+using Application.Menu.Commands.IngredientCommands;
 using Application.Menu.Commands.Validations.IngredientCommandValidators;
 using Application.Shared.Behaviors;
 using Autofac;
@@ -20,6 +22,14 @@ namespace Api.AutofacModules
             
             builder
                 .RegisterAssemblyTypes(typeof(CreateIngredientCommandValidator).Assembly)
+                .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(AddItemToBasketCommand).Assembly)
+                .AsClosedTypesOf(typeof(IRequestHandler<,>));
+
+            builder
+                .RegisterAssemblyTypes(typeof(AddItemToBasketCommandValidator).Assembly)
                 .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                 .AsImplementedInterfaces();
 
