@@ -50,5 +50,10 @@ namespace Domain.Basket.BasketAggregate
 
             basketItemToUpdate.SetQuantity(quantity);
         }
+
+        public void Clear()
+        {
+            _items.Clear();
+        }
     }
 }
