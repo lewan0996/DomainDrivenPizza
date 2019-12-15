@@ -11,9 +11,10 @@ namespace Infrastructure.Shared
     {
         private readonly TDbContext _dbContext;
 
-        public Repository(TDbContext dbContext)
+        public Repository(TDbContext dbContext, IUnitOfWork unitOfWork)
         {
             _dbContext = dbContext;
+            UnitOfWork = unitOfWork;
         }
         public virtual async Task AddAsync(T item)
         {
@@ -34,5 +35,7 @@ namespace Infrastructure.Shared
         {
             _dbContext.Set<T>().Remove(item);
         }
+
+        public IUnitOfWork UnitOfWork { get; }
     }
 }

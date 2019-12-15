@@ -1,27 +1,25 @@
-﻿using Domain.SharedKernel;
+﻿using System;
+using Domain.SharedKernel;
 
 namespace Domain.Ordering.OrderAggregate
 {
     public class OrderItem : Entity
     {
-        private int _productId;
-        public int ProductId => _productId;
+        public int ProductId { get; private set; }
 
-        private int _quantity;
-        public int Quantity => _quantity;
+        public int Quantity { get; private set; }
 
-        private float _unitPrice;
-        public float UnitPrice => _unitPrice;
+        public float? UnitPrice { get; private set; }
 
-        public OrderItem(int productId, int quantity, float unitPrice)
+        public OrderItem(int productId, int quantity, float? unitPrice)
         {
-            _productId = productId;
-            _quantity = quantity;
-            _unitPrice = unitPrice;
+            ProductId = productId;
+            Quantity = quantity;
+            UnitPrice = unitPrice;
         }
 
-        protected OrderItem() { }
-
-        public float TotalPrice => _unitPrice * _quantity;
+        public float TotalPrice => !UnitPrice.HasValue
+            ? throw new ArgumentNullException(nameof(UnitPrice))
+            : UnitPrice.Value * Quantity;
     }
 }

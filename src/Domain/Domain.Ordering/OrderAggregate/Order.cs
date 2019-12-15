@@ -5,55 +5,50 @@ namespace Domain.Ordering.OrderAggregate
 {
     public class Order : AggregateRoot
     {
-        private Client _client;
-        public Client Client => _client;
+        public Client Client { get; private set; }
 
-        private Address _address;
-        public Address Address => _address;
+        public Address Address { get; private set; }
 
         private List<OrderItem> _items;
         public IReadOnlyList<OrderItem> Items => _items;
 
-        private OrderStatus _status;
-        public OrderStatus Status => _status;
+        public OrderStatus Status { get; private set; }
 
         public Order(Client client, Address address, List<OrderItem> items)
         {
-            _client = client;
-            _address = address;
+            Client = client;
+            Address = address;
             _items = items;
-            _status = OrderStatus.Pending;
+            Status = OrderStatus.New;
         }
-
-        public Order() { }
 
         public void Ship()
         {
-            _status = OrderStatus.InDelivery;
+            Status = OrderStatus.InDelivery;
         }
 
         public void Complete()
         {
-            _status = OrderStatus.Completed;
+            Status = OrderStatus.Completed;
         }
 
         public void StartPreparation()
         {
-            _status = OrderStatus.InPreparation;
+            Status = OrderStatus.InPreparation;
         }
 
         public void Cancel()
         {
-            _status = OrderStatus.Cancelled;
+            Status = OrderStatus.Cancelled;
         }
     }
 
     public enum OrderStatus
     {
-        Pending = 0,
-        InPreparation = 1,
-        InDelivery = 2,
-        Completed = 3,
-        Cancelled = 4
+        New = 1,
+        InPreparation = 2,
+        InDelivery = 3,
+        Completed = 4,
+        Cancelled = 5
     }
 }

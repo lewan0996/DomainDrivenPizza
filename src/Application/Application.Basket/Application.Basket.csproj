@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\Domain.Basket\Domain.Basket.csproj" />
+    <ProjectReference Include="..\Application.IntegrationEvents\Application.IntegrationEvents.csproj" />
     <ProjectReference Include="..\Application.Shared\Application.Shared.csproj" />
   </ItemGroup>
 

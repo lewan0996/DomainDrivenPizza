@@ -8,7 +8,7 @@ namespace Application.Ordering.Commands
     {
         public CreateOrderCommand(string clientFirstName, string clientLastName, string clientEmailAddress,
             string clientPhoneNumber, string city, string addressLine1, string addressLine2, short zipCode,
-            IReadOnlyList<OrderItemDTO> items)
+            IReadOnlyList<(int id, int quantity)> itemIdsAndQuantity)
         {
             ClientFirstName = clientFirstName;
             ClientLastName = clientLastName;
@@ -18,7 +18,7 @@ namespace Application.Ordering.Commands
             AddressLine1 = addressLine1;
             AddressLine2 = addressLine2;
             ZipCode = zipCode;
-            Items = items;
+            ItemIdsAndQuantity = itemIdsAndQuantity;
         }
 
         public string ClientFirstName { get; }
@@ -31,6 +31,6 @@ namespace Application.Ordering.Commands
         public string AddressLine2 { get; }
         public short ZipCode { get; }
 
-        public IReadOnlyList<OrderItemDTO> Items { get; }
+        public IReadOnlyList<(int id, int quantity)> ItemIdsAndQuantity { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.IntegrationEvents.Ordering;
 using Application.Ordering.Commands;
 using Application.Ordering.Queries.DTO;
 using AutoMapper;
@@ -14,11 +15,13 @@ namespace Application.Ordering.CommandHandlers
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public CreateOrderCommandHandler(IRepository<Order> orderRepository, IMapper mapper)
+        public CreateOrderCommandHandler(IRepository<Order> orderRepository, IMapper mapper, IMediator mediator)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<OrderDTO> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -36,15 +39,23 @@ namespace Application.Ordering.CommandHandlers
                 request.AddressLine2,
                 request.ZipCode);
 
-            var orderItems = request.Items
-                .Select(dto => new OrderItem(dto.ProductId, dto.Quantity, dto.UnitPrice)
+            var orderItems = request.ItemIdsAndQuantity
+                .Select(iq => new OrderItem(iq.id, iq.quantity, null)
                 ).ToList();
 
             var order = new Order(client, address, orderItems);
 
             await _orderRepository.AddAsync(order);
 
-            // raise the integration event to validate the order
+            await _orderRepository.UnitOfWork.SaveEntitiesAsync();
+
+            var orderCreatedEvent = new NewOrderCreatedIntegrationEvent(
+                order.Id,
+                orderItems.Select(oi => (oi.ProductId, oi.Quantity))
+                    .ToList()
+            );
+
+            await _mediator.Publish(orderCreatedEvent, cancellationToken);
 
             return _mapper.Map<OrderDTO>(order);
         }
