@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+
 #pragma warning disable 1591
 
-namespace Api
+namespace API
 {
     public class Program
     {

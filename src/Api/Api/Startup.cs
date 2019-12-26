@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Reflection;
-using Api.AutofacModules;
+using System.Text.Json.Serialization;
+using API.Infrastructure.AutofacModules;
+using API.Infrastructure.Filters;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using Infrastructure.Basket;
-using Infrastructure.Menu;
+using Basket.Infrastructure;
+using Menu.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Ordering.Infrastructure;
+
 #pragma warning disable 1591
 
-namespace Api
+namespace API
 {
     public class Startup
     {
@@ -44,7 +49,7 @@ namespace Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -61,14 +66,12 @@ namespace Api
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "KIM API V1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DDD Pizza API");
                 });
 
             var swaggerRewriteOptions = new RewriteOptions();
             swaggerRewriteOptions.AddRedirect("^$", "swagger");
             app.UseRewriter(swaggerRewriteOptions);
-
-            app.UseMvc();
         }
     }
 
@@ -76,13 +79,12 @@ namespace Api
     {
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
-            services.AddMvc( /*options => { options.Filters.AddAsync(typeof(HttpGlobalExceptionFilter)); }*/)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddMvc( options => { options.Filters.Add(typeof(GlobalExceptionFilter)); })
                 .AddControllersAsServices()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
                 });
 
             services.AddCors(options =>
@@ -105,22 +107,35 @@ namespace Api
                     {
                         options
                             .UseSqlServer(configuration.GetConnectionString("SqlServer"),
-                            sqlOptions =>
-                            {
-                                sqlOptions.MigrationsAssembly(typeof(MenuDbContext).GetTypeInfo().Assembly.GetName()
-                                    .Name);
-                            });
+                                sqlOptions =>
+                                {
+                                    sqlOptions.MigrationsAssembly(typeof(MenuDbContext).GetTypeInfo().Assembly.GetName()
+                                        .Name);
+                                    sqlOptions.MigrationsHistoryTable("__EFMigrationHistory", "Menu");
+                                });
                     }
                 )
                 .AddDbContext<BasketDbContext>(options =>
                 {
-                    options.UseLazyLoadingProxies()
+                    options
                         .UseSqlServer(configuration.GetConnectionString("SqlServer"),
-                        sqlOptions =>
-                        {
-                            sqlOptions.MigrationsAssembly(typeof(BasketDbContext).GetTypeInfo().Assembly.GetName()
-                                .Name);
-                        });
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(BasketDbContext).GetTypeInfo().Assembly.GetName()
+                                    .Name);
+                                sqlOptions.MigrationsHistoryTable("__EFMigrationHistory", "Basket");
+                            });
+                })
+                .AddDbContext<OrderingDbContext>(options =>
+                {
+                    options
+                        .UseSqlServer(configuration.GetConnectionString("SqlServer"),
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(OrderingDbContext).GetTypeInfo().Assembly.GetName()
+                                    .Name);
+                                sqlOptions.MigrationsHistoryTable("__EFMigrationHistory", "Ordering");
+                            });
                 });
 
             return services;
@@ -130,13 +145,11 @@ namespace Api
         {
             services.AddSwaggerGen(options =>
             {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "DomainDrivenPizza API",
                     Version = "v1",
-                    Description = "The DomainDrivenPizza API",
-                    TermsOfService = "Terms Of Service"
+                    Description = "The DomainDrivenPizza API"
                 });
                 options.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\{Assembly.GetExecutingAssembly().GetName().Name}.xml");
             });
