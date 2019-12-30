@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
@@ -10,6 +9,7 @@ using Shared.Domain;
 
 namespace Menu.Application.PizzaApplications.CreatePizzaApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class CreatePizzaCommandHandler : IRequestHandler<CreatePizzaCommand, PizzaDTO>
     {
         private readonly IRepository<Ingredient> _ingredientRepository;
@@ -29,14 +29,10 @@ namespace Menu.Application.PizzaApplications.CreatePizzaApplication
         public async Task<PizzaDTO> Handle(CreatePizzaCommand request, CancellationToken cancellationToken)
         {
             var pizza = new Pizza(request.Name, request.Description, request.UnitPrice);
-
-            var getIngredientTasks = request.IngredientIds
-                .Select(GetIngredientTask).ToArray();
-
-            var ingredients = await Task.WhenAll(getIngredientTasks);
-
-            foreach (var ingredient in ingredients)
+            
+            foreach (var ingredientId in request.IngredientIds)
             {
+                var ingredient = await GetIngredientTask(ingredientId);
                 pizza.AddIngredient(ingredient);
             }
 
