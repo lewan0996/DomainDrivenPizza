@@ -2,14 +2,14 @@
 using System.Linq;
 using Basket.Domain.Exceptions;
 using Shared.Domain;
+#pragma warning disable 649
 
 namespace Basket.Domain.BasketAggregate
 {
     public class CustomerBasket : AggregateRoot
     {
-#pragma warning disable 649
         private List<BasketItem> _items;
-#pragma warning restore 649
+
         public IReadOnlyList<BasketItem> Items => _items;
 
         public void AddItemToBasket(int productId, int quantity, float unitPrice) // unitPrice is validated after checkout

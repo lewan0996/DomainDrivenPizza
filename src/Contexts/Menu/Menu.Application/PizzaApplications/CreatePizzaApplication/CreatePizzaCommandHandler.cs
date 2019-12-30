@@ -28,8 +28,7 @@ namespace Menu.Application.PizzaApplications.CreatePizzaApplication
         
         public async Task<PizzaDTO> Handle(CreatePizzaCommand request, CancellationToken cancellationToken)
         {
-            var pizza = new Pizza(request.Name, request.Description, request.UnitPrice, request.AvailableQuantity,
-                request.CrustType);
+            var pizza = new Pizza(request.Name, request.Description, request.UnitPrice);
 
             var getIngredientTasks = request.IngredientIds
                 .Select(GetIngredientTask).ToArray();

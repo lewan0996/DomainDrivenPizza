@@ -2,13 +2,16 @@
 using API.Contexts.Basket.DTO;
 using AutoMapper;
 using Basket.Application.AddItemToBasketApplication;
+using Basket.Application.CheckoutApplication;
 using Basket.Application.Queries;
-using Basket.Application.Queries.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Contexts.Basket.Controllers
 {
+    /// <summary>
+    /// Contains basket related endpoints
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class BasketController : ControllerBase
@@ -17,6 +20,7 @@ namespace API.Contexts.Basket.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
+        /// <inheritdoc />
         public BasketController(BasketQueries basketQueries, IMediator mediator, IMapper mapper)
         {
             _basketQueries = basketQueries;
@@ -24,6 +28,10 @@ namespace API.Contexts.Basket.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets current user basket from browser cookie
+        /// </summary>
+        /// <returns>Current user's basket</returns>
         [HttpGet]
         public async Task<ActionResult> Get()
         {
@@ -36,9 +44,12 @@ namespace API.Contexts.Basket.Controllers
 
             var result = await _basketQueries.GetBasketAsync(basketId.Value);
 
-            return Ok(_mapper.Map<BasketDTO>(result));
+            return Ok(result);
         }
 
+        /// <summary>
+        /// Adds an item to the current user's basket
+        /// </summary>
         [HttpPost("Items")]
         public async Task<ActionResult> AddItemToBasket(AddItemToBasketDTO dto)
         {
@@ -54,6 +65,28 @@ namespace API.Contexts.Basket.Controllers
             }
 
             return CreatedAtAction(nameof(Get), basketDto);
+        }
+
+        /// <summary>
+        /// Creates a new order based on customer's basket
+        /// </summary>
+        /// <param name="dto">Checkout data</param>
+        [HttpPost("Checkout")]
+        public async Task<IActionResult> Checkout(CheckoutDTO dto)
+        {
+            var basketId = GetBasketId();
+
+            if (basketId == null)
+            {
+                return BadRequest();
+            }
+
+            var checkoutCommand = _mapper.Map<CheckoutCommand>(dto);
+            checkoutCommand.BasketId = basketId.Value;
+
+            await _mediator.Send(checkoutCommand); //todo it should somehow return orderId
+
+            return NoContent();
         }
 
         private int? GetBasketId()

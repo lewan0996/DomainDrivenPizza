@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Menu.Domain.ProductAggregate;
 
 namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
 {
@@ -10,17 +9,15 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
         public string Description { get; }
         public float? UnitPrice { get; }
         public int? AvailableQuantity { get; }
-        public CrustType? CrustType { get; }
         public int[] IngredientIds { get; }
 
         public UpdatePizzaCommand(string name, string description, float? unitPrice, int? availableQuantity,
-            CrustType crustType, int[] ingredientIds)
+            int[] ingredientIds)
         {
             Name = name;
             Description = description;
             UnitPrice = unitPrice;
             AvailableQuantity = availableQuantity;
-            CrustType = crustType;
             IngredientIds = ingredientIds;
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Menu.Domain.ProductAggregate
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Menu.Domain.ProductAggregate
 {
     public class Ingredient : Product
     {
@@ -19,10 +21,8 @@
             IsVegan = isVegan;
         }
 
-        private Ingredient()
-        {
-            
-        }
+        // ReSharper disable once UnusedMember.Local
+        private Ingredient() { } // For EF
 
         public void SetSpiciness(bool isSpicy)
         {

@@ -1,12 +1,15 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Menu.Domain.ProductAggregate;
 using Shared.Domain;
+using Shared.IntegrationEvents.Menu;
 using Shared.IntegrationEvents.Ordering;
 
 namespace Menu.Application.EventHandlers
 {
+    // ReSharper disable once UnusedType.Global
     public class NewOrderCreatedEventHandler : INotificationHandler<NewOrderCreatedIntegrationEvent>
     {
         private readonly IMediator _mediator;
@@ -20,23 +23,27 @@ namespace Menu.Application.EventHandlers
 
         public async Task Handle(NewOrderCreatedIntegrationEvent notification, CancellationToken cancellationToken)
         {
-            foreach (var basketItem in notification.BasketItems)
+            var validatedOrderItemInfos = new Dictionary<int, ValidatedOrderItemInfo>();
+            foreach (var (productId, basketItemInfo) in notification.BasketItems)
             {
-                var product = await _productRepository.GetByIdAsync(basketItem.Key);
-                var requestedQuantity = basketItem.Value.Quantity;
+                var product = await _productRepository.GetByIdAsync(productId); // todo get all products with single query
+                var requestedQuantity = basketItemInfo.Quantity;
 
                 if (requestedQuantity > product.AvailableQuantity)
                 {
-                    // raise event to cancel order
-                    break;
+                    await _mediator.Publish(new OrderRejectedIntegrationEvent(notification.OrderId), cancellationToken);
+                    return;
                 }
 
-                basketItem.Value.UnitPrice = product.UnitPrice;
+                var validatedOrderItemInfo =
+                    new ValidatedOrderItemInfo(product.Id, requestedQuantity, product.UnitPrice);
+                validatedOrderItemInfos.Add(product.Id, validatedOrderItemInfo);
 
                 product.TakeFromWarehouse(requestedQuantity);
             }
 
-            // raise event to confirm order with newest prices (return notification.BasketItems)
+            await _mediator.Publish(new OrderAcceptedIntegrationEvent(notification.OrderId, validatedOrderItemInfos),
+                cancellationToken);
         }
     }
 }

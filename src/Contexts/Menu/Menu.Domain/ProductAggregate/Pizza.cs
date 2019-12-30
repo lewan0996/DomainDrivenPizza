@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Menu.Domain.ProductAggregate
 {
@@ -6,20 +7,21 @@ namespace Menu.Domain.ProductAggregate
     {
         public override ProductType Type => ProductType.Pizza;
 
-        public CrustType CrustType { get; private set; }
+        public override int AvailableQuantity => _ingredients.Min(pi => pi.Ingredient.AvailableQuantity);
 
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private List<PizzaIngredient> _ingredients;
 
         public IReadOnlyList<PizzaIngredient> Ingredients => _ingredients;
-        
-        public Pizza(string name, string description, float unitPrice, int availableQuantity,
-            CrustType crustType) : base(name, description, ProductType.Pizza, unitPrice, availableQuantity)
+
+        public Pizza(string name, string description, float unitPrice) : base(name, description, ProductType.Pizza,
+            unitPrice)
         {
-            CrustType = crustType;
             _ingredients = new List<PizzaIngredient>();
         }
 
-        private Pizza() { }
+        // ReSharper disable once UnusedMember.Local
+        private Pizza() { } // For EF
 
         public void AddIngredient(Ingredient ingredient)
         {
@@ -32,13 +34,8 @@ namespace Menu.Domain.ProductAggregate
             _ingredients.Clear();
             foreach (var ingredient in newIngredients)
             {
-               AddIngredient(ingredient);
+                AddIngredient(ingredient);
             }
-        }
-
-        public void SetCrustType(CrustType crustType)
-        {
-            CrustType = crustType;
         }
     }
 }

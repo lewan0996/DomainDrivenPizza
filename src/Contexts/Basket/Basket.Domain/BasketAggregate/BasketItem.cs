@@ -1,5 +1,8 @@
 ﻿using System;
 using Shared.Domain;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Basket.Domain.BasketAggregate
 {

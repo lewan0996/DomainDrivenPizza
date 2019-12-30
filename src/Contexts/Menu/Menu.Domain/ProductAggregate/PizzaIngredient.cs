@@ -1,11 +1,13 @@
-﻿namespace Menu.Domain.ProductAggregate
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+namespace Menu.Domain.ProductAggregate
 {
-    public class PizzaIngredient //todo encapsulate
+    public class PizzaIngredient
     {
-        public int PizzaId { get; set; }
-        public Pizza Pizza { get; set; }
-        public int IngredientId { get; set; }
-        public Ingredient Ingredient { get; set; }
+        public int PizzaId { get; private set; }
+        public Pizza Pizza { get; private set; }
+        public int IngredientId { get; private set; }
+        public Ingredient Ingredient { get; private set; }
         
         public PizzaIngredient(Pizza pizza, Ingredient ingredient)
         {
@@ -13,6 +15,7 @@
             Ingredient = ingredient;
         }
 
-        private PizzaIngredient() { }
+        // ReSharper disable once UnusedMember.Local
+        private PizzaIngredient() { } // For EF
     }
 }

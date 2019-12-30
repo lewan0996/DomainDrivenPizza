@@ -10,6 +10,7 @@ using Shared.IntegrationEvents.Ordering;
 
 namespace Ordering.Application.CreateOrderApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, OrderDTO>
     {
         private readonly IRepository<Order> _orderRepository;
@@ -39,7 +40,7 @@ namespace Ordering.Application.CreateOrderApplication
                 request.ZipCode);
 
             var orderItems = request.BasketItems
-                .Select(kv => new OrderItem(kv.Key, kv.Value.Quantity, kv.Value.UnitPrice))
+                .Select(kv => new OrderItem(kv.Key, kv.Value.Quantity, null))
                 .ToList();
 
             var order = new Order(client, address, orderItems);

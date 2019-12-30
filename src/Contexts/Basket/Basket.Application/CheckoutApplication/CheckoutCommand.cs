@@ -18,7 +18,7 @@ namespace Basket.Application.CheckoutApplication
             ZipCode = zipCode;
         }
 
-        public int BasketId { get; }
+        public int BasketId { get; set; }
         public string FirstName { get; }
         public string LastName { get; }
         public string EmailAddress { get; }

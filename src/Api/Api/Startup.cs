@@ -72,6 +72,10 @@ namespace API
             var swaggerRewriteOptions = new RewriteOptions();
             swaggerRewriteOptions.AddRedirect("^$", "swagger");
             app.UseRewriter(swaggerRewriteOptions);
+
+            app.UseRouting();
+
+            app.UseEndpoints(c => { c.MapControllers(); });
         }
     }
 

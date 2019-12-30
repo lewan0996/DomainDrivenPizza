@@ -1,5 +1,10 @@
-﻿namespace API.Contexts.Basket.DTO
+﻿using AutoMapper;
+using Basket.Application.AddItemToBasketApplication;
+
+#pragma warning disable 1591
+namespace API.Contexts.Basket.DTO
 {
+    [AutoMap(typeof(AddItemToBasketCommand))]
     public class AddItemToBasketDTO
     {
         public int ProductId { get; set; }

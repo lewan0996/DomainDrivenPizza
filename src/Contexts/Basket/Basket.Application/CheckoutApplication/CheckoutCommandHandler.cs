@@ -42,8 +42,7 @@ namespace Basket.Application.CheckoutApplication
                     , bi => new BasketItemInfo
                     {
                         Id = bi.ProductId,
-                        Quantity = bi.Quantity,
-                        UnitPrice = bi.UnitPrice
+                        Quantity = bi.Quantity
                     }),
                 request.FirstName,
                 request.LastName,

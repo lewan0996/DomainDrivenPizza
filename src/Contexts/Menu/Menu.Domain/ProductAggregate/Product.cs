@@ -13,7 +13,7 @@ namespace Menu.Domain.ProductAggregate
 
         public float UnitPrice { get; private set; }
 
-        public int AvailableQuantity { get; private set; }
+        public virtual int AvailableQuantity { get; private set; }
 
         public Product(string name, string description, ProductType type, float unitPrice,
             int availableQuantity = 0)

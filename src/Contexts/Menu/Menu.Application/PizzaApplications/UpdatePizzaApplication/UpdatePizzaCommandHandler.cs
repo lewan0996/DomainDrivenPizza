@@ -58,11 +58,6 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
                 }
             }
 
-            if (request.CrustType.HasValue)
-            {
-                pizzaToUpdate.SetCrustType(request.CrustType.Value);
-            }
-
             if (request.IngredientIds != null)
             {
                 var getIngredientTasks = request.IngredientIds.Select(GetIngredientTask).ToArray();

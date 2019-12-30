@@ -1,5 +1,9 @@
-﻿namespace Basket.Application.Queries.DTO
+﻿using AutoMapper;
+using Basket.Domain.BasketAggregate;
+
+namespace Basket.Application.Queries.DTO
 {
+    [AutoMap(typeof(BasketItem))]
     public class BasketItemDTO
     {
         public int ProductId { get; set; }
