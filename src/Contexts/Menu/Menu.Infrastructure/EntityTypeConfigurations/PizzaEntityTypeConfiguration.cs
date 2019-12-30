@@ -8,7 +8,8 @@ namespace Menu.Infrastructure.EntityTypeConfigurations
         public override void Configure(EntityTypeBuilder<Pizza> builder)
         {
             base.Configure(builder);
-            builder.Property(p => p.CrustType).HasConversion<string>();
+
+            //builder.HasData(SeedData.Pizzas); // there is a problem with OwnedTypes
         }
     }
 }
