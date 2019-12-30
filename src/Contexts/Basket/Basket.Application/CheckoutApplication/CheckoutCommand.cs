@@ -4,10 +4,9 @@ namespace Basket.Application.CheckoutApplication
 {
     public class CheckoutCommand : IRequest
     {
-        public CheckoutCommand(int basketId, string firstName, string lastName, string emailAddress, string phoneNumber,
+        public CheckoutCommand(string firstName, string lastName, string emailAddress, string phoneNumber,
             string city, string addressLine1, string addressLine2, short zipCode)
         {
-            BasketId = basketId;
             FirstName = firstName;
             LastName = lastName;
             EmailAddress = emailAddress;

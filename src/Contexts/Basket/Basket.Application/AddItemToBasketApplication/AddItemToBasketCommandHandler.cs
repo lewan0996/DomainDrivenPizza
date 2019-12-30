@@ -8,6 +8,7 @@ using Shared.Domain;
 
 namespace Basket.Application.AddItemToBasketApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class AddItemToBasketCommandHandler : IRequestHandler<AddItemToBasketCommand, BasketDTO>
     {
         private readonly IRepository<CustomerBasket> _basketRepository;
@@ -34,6 +35,8 @@ namespace Basket.Application.AddItemToBasketApplication
             }
 
             customerBasket.AddItemToBasket(request.ProductId, request.Quantity, request.UnitPrice);
+
+            await _basketRepository.UnitOfWork.SaveEntitiesAsync();
 
             return _mapper.Map<BasketDTO>(customerBasket);
         }

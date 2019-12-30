@@ -8,9 +8,15 @@ namespace Basket.Domain.BasketAggregate
 {
     public class CustomerBasket : AggregateRoot
     {
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private List<BasketItem> _items;
 
         public IReadOnlyList<BasketItem> Items => _items;
+
+        public CustomerBasket()
+        {
+            _items = new List<BasketItem>();
+        }
 
         public void AddItemToBasket(int productId, int quantity, float unitPrice) // unitPrice is validated after checkout
         {

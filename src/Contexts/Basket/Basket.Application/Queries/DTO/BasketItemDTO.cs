@@ -3,7 +3,7 @@ using Basket.Domain.BasketAggregate;
 
 namespace Basket.Application.Queries.DTO
 {
-    [AutoMap(typeof(BasketItem))]
+    [AutoMap(typeof(BasketItem), ReverseMap = true)]
     public class BasketItemDTO
     {
         public int ProductId { get; set; }

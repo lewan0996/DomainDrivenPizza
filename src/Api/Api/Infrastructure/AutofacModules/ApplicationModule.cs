@@ -5,7 +5,9 @@ using Basket.Infrastructure;
 using Menu.Application.Queries;
 using Menu.Domain.ProductAggregate;
 using Menu.Infrastructure;
+using Menu.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
+using Ordering.Domain.OrderAggregate;
 using Ordering.Infrastructure;
 using Shared.Domain;
 using Shared.Infrastructure;
@@ -34,16 +36,20 @@ namespace API.Infrastructure.AutofacModules
                 .As<IRepository<Ingredient>>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Repository<Pizza, MenuDbContext>>()
+            builder.RegisterType<PizzaRepository>()
                 .As<IRepository<Pizza>>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Repository<Product, MenuDbContext>>()
+            builder.RegisterType<ProductRepository>()
                 .As<IRepository<Product>>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Repository<CustomerBasket, BasketDbContext>>()
+            builder.RegisterType<BasketRepository>()
                 .As<IRepository<CustomerBasket>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<Repository<Order, OrderingDbContext>>()
+                .As<IRepository<Order>>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ProductQueries>()

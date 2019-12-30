@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MediatR;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Shared.IntegrationEvents.Menu
 {

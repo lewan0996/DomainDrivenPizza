@@ -4,7 +4,7 @@ using Basket.Domain.BasketAggregate;
 
 namespace Basket.Application.Queries.DTO
 {
-    [AutoMap(typeof(CustomerBasket))]
+    [AutoMap(typeof(CustomerBasket), ReverseMap = true)]
     public class BasketDTO
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global

@@ -35,7 +35,7 @@ namespace Ordering.Domain.OrderAggregate
                 throw new DomainException(new ArgumentException($"Provided email address {emailAddress} is not valid",
                     nameof(emailAddress)));
             }
-            if (!Regex.IsMatch(phoneNumber, @"^(\+[0-9]{9})$"))
+            if (!Regex.IsMatch(phoneNumber, @"^\d{9}$"))
             {
                 throw new DomainException(new ArgumentException($"Provided phone number {phoneNumber} is not valid",
                     nameof(phoneNumber)));

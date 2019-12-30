@@ -1,7 +1,9 @@
-﻿using Ordering.Domain.OrderAggregate;
+﻿using AutoMapper;
+using Ordering.Domain.OrderAggregate;
 
 namespace Ordering.Application.Queries.DTO
 {
+    [AutoMap(typeof(Order), ReverseMap = true)]
     public class OrderDTO
     {
         public int Id { get; set; }

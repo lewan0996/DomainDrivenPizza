@@ -27,11 +27,12 @@ namespace Menu.Application.EventHandlers
             foreach (var (productId, basketItemInfo) in notification.BasketItems)
             {
                 var product = await _productRepository.GetByIdAsync(productId); // todo get all products with single query
+                
                 var requestedQuantity = basketItemInfo.Quantity;
 
-                if (requestedQuantity > product.AvailableQuantity)
+                if (product is Ingredient || requestedQuantity > product.AvailableQuantity)
                 {
-                    await _mediator.Publish(new OrderRejectedIntegrationEvent(notification.OrderId), cancellationToken);
+                    await _mediator.Publish(new OrderRejectedIntegrationEvent(notification.OrderId), cancellationToken); // todo Implement rejection reason
                     return;
                 }
 

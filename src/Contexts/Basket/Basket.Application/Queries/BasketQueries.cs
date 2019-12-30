@@ -22,11 +22,12 @@ namespace Basket.Application.Queries
 
             BasketDTO resultBasket = null;
 
+            //todo simplify
             var queryResult = await connection.QueryAsync<BasketDTO, BasketItemDTO, BasketDTO>(
-                "SELECT b.[ProductId] as BasketId, bi.[ProductId] as BasketItemId, bi.[ProductId], bi.[Quantity] " +
-                "FROM [CustomerBasket].[Baskets] b " +
-                "INNER JOIN [CustomerBasket].[BasketItems] bi on bi.BasketId = b.[ProductId] " +
-                $"WHERE b.[ProductId]={id}",
+                "SELECT b.[Id] as Id, bi.[Id] as BasketItemId, bi.[ProductId], bi.[Quantity] " +
+                "FROM [Basket].[Baskets] b " +
+                "INNER JOIN [Basket].[BasketItems] bi on bi.BasketId = b.[Id] " +
+                $"WHERE b.[Id]={id}",
                 (basket, basketItem) =>
                 {
                     if (resultBasket == null)

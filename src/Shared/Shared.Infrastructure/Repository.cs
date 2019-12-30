@@ -9,31 +9,31 @@ namespace Shared.Infrastructure
         where T : AggregateRoot
         where TDbContext : DbContext
     {
-        private readonly TDbContext _dbContext;
+        protected readonly TDbContext DbContext;
 
         public Repository(TDbContext dbContext, IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            DbContext = dbContext;
             UnitOfWork = unitOfWork;
         }
         public virtual async Task AddAsync(T item)
         {
-            await _dbContext.Set<T>().AddAsync(item);
+            await DbContext.Set<T>().AddAsync(item);
         }
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return await DbContext.Set<T>().FindAsync(id);
         }
 
         public virtual async Task<IReadOnlyList<T>> GetAll()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await DbContext.Set<T>().ToListAsync();
         }
 
         public virtual void Delete(T item)
         {
-            _dbContext.Set<T>().Remove(item);
+            DbContext.Set<T>().Remove(item);
         }
 
         public IUnitOfWork UnitOfWork { get; }
