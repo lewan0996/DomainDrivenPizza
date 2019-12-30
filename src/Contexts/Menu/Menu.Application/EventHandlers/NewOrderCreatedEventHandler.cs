@@ -13,12 +13,12 @@ namespace Menu.Application.EventHandlers
     public class NewOrderCreatedEventHandler : INotificationHandler<NewOrderCreatedIntegrationEvent>
     {
         private readonly IMediator _mediator;
-        private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Pizza> _pizzaRepository; //todo replace with product repository after TPT is introduced
 
-        public NewOrderCreatedEventHandler(IMediator mediator, IRepository<Product> productRepository)
+        public NewOrderCreatedEventHandler(IMediator mediator, IRepository<Pizza> pizzaRepository)
         {
             _mediator = mediator;
-            _productRepository = productRepository;
+            _pizzaRepository = pizzaRepository;
         }
 
         public async Task Handle(NewOrderCreatedIntegrationEvent notification, CancellationToken cancellationToken)
@@ -26,15 +26,23 @@ namespace Menu.Application.EventHandlers
             var validatedOrderItemInfos = new Dictionary<int, ValidatedOrderItemInfo>();
             foreach (var (productId, basketItemInfo) in notification.BasketItems)
             {
-                var product = await _productRepository.GetByIdAsync(productId); // todo get all products with single query
-                
+                var product = await _pizzaRepository.GetByIdAsync(productId); // todo get all products with single query
+
                 var requestedQuantity = basketItemInfo.Quantity;
 
-                if (product is Ingredient || requestedQuantity > product.AvailableQuantity)
+                if (requestedQuantity > product.AvailableQuantity)
                 {
-                    await _mediator.Publish(new OrderRejectedIntegrationEvent(notification.OrderId), cancellationToken); // todo Implement rejection reason
+                    await _mediator.Publish(new OrderRejectedIntegrationEvent(notification.OrderId),
+                        cancellationToken); // todo Implement rejection reason
                     return;
                 }
+            }
+
+            foreach (var (productId, basketItemInfo) in notification.BasketItems)
+            {
+                var product = await _pizzaRepository.GetByIdAsync(productId); // todo get all products with single query
+
+                var requestedQuantity = basketItemInfo.Quantity;
 
                 var validatedOrderItemInfo =
                     new ValidatedOrderItemInfo(product.Id, requestedQuantity, product.UnitPrice);

@@ -38,7 +38,7 @@ namespace Menu.Domain.ProductAggregate
             AvailableQuantity += quantity;
         }
 
-        public void TakeFromWarehouse(int quantity)
+        public virtual void TakeFromWarehouse(int quantity)
         {
             if (quantity <= 0)
             {

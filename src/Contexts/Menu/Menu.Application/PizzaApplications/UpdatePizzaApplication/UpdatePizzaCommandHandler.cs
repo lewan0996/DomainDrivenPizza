@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -60,8 +60,11 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
 
             if (request.IngredientIds != null)
             {
-                var getIngredientTasks = request.IngredientIds.Select(GetIngredientTask).ToArray();
-                var ingredients = await Task.WhenAll(getIngredientTasks);
+                var ingredients = new List<Ingredient>();
+                foreach (var ingredientId in request.IngredientIds)
+                {
+                    ingredients.Add(await GetIngredientTask(ingredientId));
+                }
                 pizzaToUpdate.ReplaceIngredients(ingredients);
             }
         }

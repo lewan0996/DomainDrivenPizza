@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Ordering.Infrastructure;
-using AssemblyExtensions = Shared.Infrastructure.AssemblyExtensions;
+using AssemblyExtensions = API.Infrastructure.AssemblyExtensions;
 
 #pragma warning disable 1591
 
@@ -38,7 +38,11 @@ namespace API
             services.AddCustomMvc()
                 .AddCustomDbContext(Configuration)
                 .AddCustomSwagger(Configuration)
-                .AddAutoMapper(AssemblyExtensions.GetSolutionAssemblies());
+                .AddAutoMapper(config =>
+                {
+                    config.AllowNullCollections = true;
+                    config.AllowNullDestinationValues = true;
+                }, AssemblyExtensions.GetMappingAssemblies());
 
             var autofacContainerBuilder = new ContainerBuilder();
             autofacContainerBuilder.Populate(services);

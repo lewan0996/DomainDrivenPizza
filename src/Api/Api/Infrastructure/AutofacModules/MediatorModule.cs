@@ -5,7 +5,6 @@ using Menu.Application.EventHandlers;
 using Ordering.Application.CreateOrderApplication;
 using Ordering.Application.EventHandlers;
 using Shared.Application.Behaviors;
-using Shared.Infrastructure;
 
 #pragma warning disable 1591
 
@@ -19,7 +18,7 @@ namespace API.Infrastructure.AutofacModules
                 .AsImplementedInterfaces();
 
             // Register all the Command handler classes (they implement IRequestHandler) in assembly holding the Commands
-            builder.RegisterAssemblyTypes(AssemblyExtensions.GetSolutionAssemblies())
+            builder.RegisterAssemblyTypes(AssemblyExtensions.GetCommandHandlerAssemblies())
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
             builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).Assembly) // todo remove after implementing at least one Ordering endpoint
@@ -38,7 +37,7 @@ namespace API.Infrastructure.AutofacModules
 
             // Register the Command's Validators (Validators based on FluentValidation library)
             builder
-                .RegisterAssemblyTypes(AssemblyExtensions.GetSolutionAssemblies())
+                .RegisterAssemblyTypes(AssemblyExtensions.GetCommandHandlerAssemblies())
                 .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
                 .AsImplementedInterfaces();
 

@@ -37,5 +37,13 @@ namespace Menu.Domain.ProductAggregate
                 AddIngredient(ingredient);
             }
         }
+
+        public override void TakeFromWarehouse(int quantity)
+        {
+            foreach (var pizzaIngredient in _ingredients)
+            {
+                pizzaIngredient.Ingredient.TakeFromWarehouse(quantity);
+            }
+        }
     }
 }

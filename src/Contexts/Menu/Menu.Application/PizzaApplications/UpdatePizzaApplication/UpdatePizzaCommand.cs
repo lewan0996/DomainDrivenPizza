@@ -11,13 +11,12 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
         public int? AvailableQuantity { get; }
         public int[] IngredientIds { get; }
 
-        public UpdatePizzaCommand(string name, string description, float? unitPrice, int? availableQuantity,
+        public UpdatePizzaCommand(string name, string description, float? unitPrice,
             int[] ingredientIds)
         {
             Name = name;
             Description = description;
             UnitPrice = unitPrice;
-            AvailableQuantity = availableQuantity;
             IngredientIds = ingredientIds;
         }
     }

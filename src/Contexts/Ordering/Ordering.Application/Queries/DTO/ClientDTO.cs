@@ -1,5 +1,9 @@
-﻿namespace Ordering.Application.Queries.DTO
+﻿using AutoMapper;
+using Ordering.Domain.OrderAggregate;
+
+namespace Ordering.Application.Queries.DTO
 {
+    [AutoMap(typeof(Client), ReverseMap = true)]
     public class ClientDTO
     {
         public string FirstName { get; set; }
