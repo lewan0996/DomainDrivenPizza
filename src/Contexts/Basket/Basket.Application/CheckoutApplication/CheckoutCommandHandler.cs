@@ -28,7 +28,7 @@ namespace Basket.Application.CheckoutApplication
 
             if (basket == null)
             {
-                throw new RecordNotFoundException(request.BasketId);
+                throw new RecordNotFoundException(request.BasketId, nameof(CustomerBasket));
             }
 
             if (basket.Items.Count == 0)

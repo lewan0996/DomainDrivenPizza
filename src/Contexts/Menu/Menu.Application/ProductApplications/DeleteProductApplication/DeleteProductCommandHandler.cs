@@ -7,6 +7,7 @@ using Shared.Domain;
 
 namespace Menu.Application.ProductApplications.DeleteProductApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class DeleteProductCommandHandler: AsyncRequestHandler<DeleteProductCommand>
     {
         private readonly IRepository<Product> _productRepository;
@@ -21,7 +22,7 @@ namespace Menu.Application.ProductApplications.DeleteProductApplication
             var productToDelete = await _productRepository.GetByIdAsync(request.Id);
             if (productToDelete == null)
             {
-                throw new RecordNotFoundException(request.Id);
+                throw new RecordNotFoundException(request.Id, nameof(Product));
             }
 
             _productRepository.Delete(productToDelete);

@@ -22,7 +22,6 @@ namespace Basket.Application.Queries
 
             BasketDTO resultBasket = null;
 
-            //todo simplify
             var queryResult = await connection.QueryAsync<BasketDTO, BasketItemDTO, BasketDTO>(
                 "SELECT b.[Id] as Id, bi.[Id] as BasketItemId, bi.[ProductId], bi.[Quantity] " +
                 "FROM [Basket].[Baskets] b " +

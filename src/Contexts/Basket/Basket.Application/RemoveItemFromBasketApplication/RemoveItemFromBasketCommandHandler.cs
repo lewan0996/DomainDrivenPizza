@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Basket.Domain.BasketAggregate;
 using MediatR;
 using Shared.Application.Exceptions;
 using Shared.Domain;
@@ -8,9 +9,9 @@ namespace Basket.Application.RemoveItemFromBasketApplication
 {
     public class RemoveItemFromBasketCommandHandler : AsyncRequestHandler<RemoveItemFromBasketCommand>
     {
-        private readonly IRepository<Domain.BasketAggregate.CustomerBasket> _basketRepository;
+        private readonly IRepository<CustomerBasket> _basketRepository;
 
-        public RemoveItemFromBasketCommandHandler(IRepository<Domain.BasketAggregate.CustomerBasket> basketRepository)
+        public RemoveItemFromBasketCommandHandler(IRepository<CustomerBasket> basketRepository)
         {
             _basketRepository = basketRepository;
         }
@@ -21,7 +22,7 @@ namespace Basket.Application.RemoveItemFromBasketApplication
 
             if (basket == null)
             {
-                throw new RecordNotFoundException(request.BasketId);
+                throw new RecordNotFoundException(request.BasketId, nameof(CustomerBasket));
             }
 
             basket.RemoveItemFromBasket(request.ProductId);

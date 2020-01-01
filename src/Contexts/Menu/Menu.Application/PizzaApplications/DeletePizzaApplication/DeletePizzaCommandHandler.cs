@@ -1,16 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Menu.Domain.ProductAggregate;
 using Shared.Application.Exceptions;
 using Shared.Domain;
 
 namespace Menu.Application.PizzaApplications.DeletePizzaApplication
 {
-    public class DeletePizzaCommandHandler :AsyncRequestHandler<DeletePizzaCommand>
+    // ReSharper disable once UnusedType.Global
+    public class DeletePizzaCommandHandler : AsyncRequestHandler<DeletePizzaCommand>
     {
-        private readonly IRepository<Domain.ProductAggregate.Pizza> _pizzaRepository;
+        private readonly IRepository<Pizza> _pizzaRepository;
 
-        public DeletePizzaCommandHandler(IRepository<Domain.ProductAggregate.Pizza> pizzaRepository)
+        public DeletePizzaCommandHandler(IRepository<Pizza> pizzaRepository)
         {
             _pizzaRepository = pizzaRepository;
         }
@@ -20,7 +22,7 @@ namespace Menu.Application.PizzaApplications.DeletePizzaApplication
             var pizzaToDelete = await _pizzaRepository.GetByIdAsync(request.Id);
             if (pizzaToDelete == null)
             {
-                throw new RecordNotFoundException(request.Id);
+                throw new RecordNotFoundException(request.Id, nameof(Pizza));
             }
 
             _pizzaRepository.Delete(pizzaToDelete);

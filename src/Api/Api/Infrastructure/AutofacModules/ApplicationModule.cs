@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Linq;
+using Autofac;
 using Basket.Application.Queries;
 using Basket.Domain.BasketAggregate;
 using Basket.Infrastructure;
@@ -6,11 +7,13 @@ using Menu.Application.Queries;
 using Menu.Domain.ProductAggregate;
 using Menu.Infrastructure;
 using Menu.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Ordering.Domain.OrderAggregate;
 using Ordering.Infrastructure;
 using Shared.Domain;
 using Shared.Infrastructure;
+using Module = Autofac.Module;
 
 #pragma warning disable 1591
 
@@ -27,8 +30,7 @@ namespace API.Infrastructure.AutofacModules
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(c => new EFUnitOfWork(
-                    c.Resolve<MenuDbContext>(), c.Resolve<BasketDbContext>(),
-                    c.Resolve<OrderingDbContext>())) //todo Use reflection to pass all dbcontexts
+                    GetAllDbContexts(c)))
                 .As<IUnitOfWork>()
                 .InstancePerLifetimeScope();
 
@@ -54,6 +56,12 @@ namespace API.Infrastructure.AutofacModules
 
             builder.RegisterType<ProductQueries>()
                 .AsSelf()
+                .WithParameter(
+                    new TypedParameter(
+                        typeof(string),
+                        _configuration.GetConnectionString("SqlServer")
+                    )
+                )
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<BasketQueries>()
@@ -65,6 +73,13 @@ namespace API.Infrastructure.AutofacModules
                         )
                     )
                 .InstancePerLifetimeScope();
+        }
+
+        private DbContext[] GetAllDbContexts(IComponentContext c)
+        {
+            var dbContextTypes = AssemblyExtensions.GetDbContextTypes();
+
+            return dbContextTypes.Select(t => (DbContext) c.Resolve(t)).ToArray();
         }
     }
 }

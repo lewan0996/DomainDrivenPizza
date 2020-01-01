@@ -1,15 +1,17 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Menu.Domain.ProductAggregate;
 using Shared.Application.Exceptions;
 using Shared.Domain;
 
 namespace Menu.Application.IngredientApplications.UpdateIngredientApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class UpdateIngredientCommandHandler : AsyncRequestHandler<UpdateIngredientCommand>
     {
-        private readonly IRepository<Domain.ProductAggregate.Ingredient> _ingredientRepository;
-        public UpdateIngredientCommandHandler(IRepository<Domain.ProductAggregate.Ingredient> ingredientRepository)
+        private readonly IRepository<Ingredient> _ingredientRepository;
+        public UpdateIngredientCommandHandler(IRepository<Ingredient> ingredientRepository)
         {
             _ingredientRepository = ingredientRepository;
         }
@@ -20,7 +22,7 @@ namespace Menu.Application.IngredientApplications.UpdateIngredientApplication
 
             if (ingredientToUpdate == null)
             {
-                throw new RecordNotFoundException(request.Id);
+                throw new RecordNotFoundException(request.Id, nameof(Ingredient));
             }
 
             if (request.Name != null)

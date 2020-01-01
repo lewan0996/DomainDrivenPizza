@@ -47,7 +47,7 @@ namespace Menu.Application.PizzaApplications.CreatePizzaApplication
             var ingredient = await _ingredientRepository.GetByIdAsync(ingredientId);
             if (ingredient == null)
             {
-                throw new RecordNotFoundException(ingredientId);
+                throw new RecordNotFoundException(ingredientId, nameof(Ingredient));
             }
 
             return ingredient;

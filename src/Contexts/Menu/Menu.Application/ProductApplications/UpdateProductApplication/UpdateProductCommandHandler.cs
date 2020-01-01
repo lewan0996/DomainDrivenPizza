@@ -7,6 +7,7 @@ using Shared.Domain;
 
 namespace Menu.Application.ProductApplications.UpdateProductApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class UpdateProductCommandHandler : AsyncRequestHandler<UpdateProductCommand>
     {
         private readonly IRepository<Product> _productRepository;
@@ -22,7 +23,7 @@ namespace Menu.Application.ProductApplications.UpdateProductApplication
 
             if (productToUpdate == null)
             {
-                throw new RecordNotFoundException(request.Id);
+                throw new RecordNotFoundException(request.Id, nameof(Product));
             }
 
             if (request.Name != null)

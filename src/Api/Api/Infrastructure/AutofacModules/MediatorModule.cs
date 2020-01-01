@@ -1,9 +1,6 @@
 ﻿using Autofac;
 using FluentValidation;
 using MediatR;
-using Menu.Application.EventHandlers;
-using Ordering.Application.CreateOrderApplication;
-using Ordering.Application.EventHandlers;
 using Shared.Application.Behaviors;
 
 #pragma warning disable 1591
@@ -21,18 +18,7 @@ namespace API.Infrastructure.AutofacModules
             builder.RegisterAssemblyTypes(AssemblyExtensions.GetCommandHandlerAssemblies())
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
 
-            builder.RegisterAssemblyTypes(typeof(CreateOrderCommandHandler).Assembly) // todo remove after implementing at least one Ordering endpoint
-                .AsClosedTypesOf(typeof(IRequestHandler<,>));
-
-            // Register the EventHandler classes (they implement INotificationHandler<>) in assembly holding the Domain Events
-
-            //builder.RegisterAssemblyTypes(AssemblyExtensions.GetSolutionAssemblies())
-            //    .AsClosedTypesOf(typeof(INotificationHandler<>));
-
-            builder.RegisterAssemblyTypes(typeof(BasketCheckedOutEventHandler).Assembly) // todo remove after implementing at least one Ordering endpoint
-                .AsClosedTypesOf(typeof(INotificationHandler<>));
-
-            builder.RegisterAssemblyTypes(typeof(NewOrderCreatedEventHandler).Assembly) // todo remove after implementing at least one Ordering endpoint
+            builder.RegisterAssemblyTypes(AssemblyExtensions.GetEventHandlerAssemblies())
                 .AsClosedTypesOf(typeof(INotificationHandler<>));
 
             // Register the Command's Validators (Validators based on FluentValidation library)

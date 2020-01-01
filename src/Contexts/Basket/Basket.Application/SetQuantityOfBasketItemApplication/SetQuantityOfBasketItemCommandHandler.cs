@@ -23,7 +23,7 @@ namespace Basket.Application.SetQuantityOfBasketItemApplication
 
             if (basket == null)
             {
-                throw new RecordNotFoundException(request.BasketId);
+                throw new RecordNotFoundException(request.BasketId, nameof(CustomerBasket));
             }
 
             basket.SetItemQuantity(request.ProductId, request.Quantity);

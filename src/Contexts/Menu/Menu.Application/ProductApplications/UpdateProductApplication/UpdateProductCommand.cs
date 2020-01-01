@@ -5,7 +5,7 @@ namespace Menu.Application.ProductApplications.UpdateProductApplication
 {
     public class UpdateProductCommand : IRequest
     {
-        public int Id { get; set; } // todo remove setter
+        public int Id { get; }
         public string Name { get; }
         public string Description { get; }
         public float? UnitPrice { get; }

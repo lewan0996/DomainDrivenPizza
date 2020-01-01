@@ -8,6 +8,7 @@ using Shared.Domain;
 
 namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class UpdatePizzaCommandHandler : AsyncRequestHandler<UpdatePizzaCommand>
     {
         private readonly IRepository<Pizza> _pizzaRepository;
@@ -26,7 +27,7 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
 
             if (pizzaToUpdate == null)
             {
-                throw new RecordNotFoundException(request.Id);
+                throw new RecordNotFoundException(request.Id, nameof(Pizza));
             }
 
             if (request.Name != null)
@@ -42,20 +43,6 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
             if (request.UnitPrice.HasValue)
             {
                 pizzaToUpdate.SetUnitPrice(request.UnitPrice.Value);
-            }
-
-            if (request.AvailableQuantity.HasValue)
-            {
-                if (request.AvailableQuantity > pizzaToUpdate.AvailableQuantity)
-                {
-                    pizzaToUpdate.AddToWarehouse(request.AvailableQuantity.Value -
-                                                      pizzaToUpdate.AvailableQuantity);
-                }
-                if (request.AvailableQuantity < pizzaToUpdate.AvailableQuantity)
-                {
-                    pizzaToUpdate.TakeFromWarehouse(pizzaToUpdate.AvailableQuantity -
-                                                         request.AvailableQuantity.Value);
-                }
             }
 
             if (request.IngredientIds != null)
@@ -74,7 +61,7 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
             var ingredient = await _ingredientRepository.GetByIdAsync(ingredientId);
             if (ingredient == null)
             {
-                throw new RecordNotFoundException(ingredientId);
+                throw new RecordNotFoundException(ingredientId, nameof(Ingredient));
             }
 
             return ingredient;

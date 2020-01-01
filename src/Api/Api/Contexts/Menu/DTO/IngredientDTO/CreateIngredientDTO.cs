@@ -1,6 +1,11 @@
-﻿#pragma warning disable 1591
+﻿using AutoMapper;
+using Menu.Application.IngredientApplications.CreateIngredientApplication;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+#pragma warning disable 1591
 namespace API.Contexts.Menu.DTO.IngredientDTO
 {
+    [AutoMap(typeof(CreateIngredientCommand), ReverseMap = true)]
     public class CreateIngredientDTO
     {
         public string Name { get; set; }

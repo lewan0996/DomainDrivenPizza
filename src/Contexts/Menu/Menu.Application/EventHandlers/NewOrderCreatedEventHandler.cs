@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Menu.Domain.ProductAggregate;
+using Shared.Application.Exceptions;
 using Shared.Domain;
 using Shared.IntegrationEvents.Menu;
 using Shared.IntegrationEvents.Ordering;
@@ -27,6 +28,11 @@ namespace Menu.Application.EventHandlers
             foreach (var (productId, basketItemInfo) in notification.BasketItems)
             {
                 var product = await _pizzaRepository.GetByIdAsync(productId); // todo get all products with single query
+
+                if (product == null)
+                {
+                    throw new RecordNotFoundException(productId, nameof(Product));
+                }
 
                 var requestedQuantity = basketItemInfo.Quantity;
 

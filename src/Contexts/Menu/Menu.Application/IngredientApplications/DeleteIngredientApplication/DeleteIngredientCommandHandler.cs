@@ -1,16 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Menu.Domain.ProductAggregate;
 using Shared.Application.Exceptions;
 using Shared.Domain;
 
 namespace Menu.Application.IngredientApplications.DeleteIngredientApplication
 {
+    // ReSharper disable once UnusedType.Global
     public class DeleteIngredientCommandHandler : AsyncRequestHandler<DeleteIngredientCommand>
     {
-        private readonly IRepository<Domain.ProductAggregate.Ingredient> _ingredientRepository;
+        private readonly IRepository<Ingredient> _ingredientRepository;
 
-        public DeleteIngredientCommandHandler(IRepository<Domain.ProductAggregate.Ingredient> ingredientRepository)
+        public DeleteIngredientCommandHandler(IRepository<Ingredient> ingredientRepository)
         {
             _ingredientRepository = ingredientRepository;
         }
@@ -20,7 +22,7 @@ namespace Menu.Application.IngredientApplications.DeleteIngredientApplication
             var ingredientToDelete = await _ingredientRepository.GetByIdAsync(request.Id);
             if (ingredientToDelete == null)
             {
-                throw new RecordNotFoundException(request.Id);
+                throw new RecordNotFoundException(request.Id, nameof(Ingredient));
             }
 
             _ingredientRepository.Delete(ingredientToDelete);

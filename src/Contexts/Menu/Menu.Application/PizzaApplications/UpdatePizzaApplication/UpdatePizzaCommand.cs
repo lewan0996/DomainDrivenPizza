@@ -8,11 +8,10 @@ namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
         public string Name { get; }
         public string Description { get; }
         public float? UnitPrice { get; }
-        public int? AvailableQuantity { get; }
         public int[] IngredientIds { get; }
 
         public UpdatePizzaCommand(string name, string description, float? unitPrice,
-            int[] ingredientIds)
+            int[] ingredientIds = null)
         {
             Name = name;
             Description = description;

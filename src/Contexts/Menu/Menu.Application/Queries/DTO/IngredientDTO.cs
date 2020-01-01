@@ -1,4 +1,5 @@
-﻿namespace Menu.Application.Queries.DTO
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace Menu.Application.Queries.DTO
 {
     public class IngredientDTO
     {
