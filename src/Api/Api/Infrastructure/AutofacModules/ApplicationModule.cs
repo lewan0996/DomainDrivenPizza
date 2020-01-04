@@ -9,6 +9,7 @@ using Menu.Infrastructure;
 using Menu.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Ordering.Application.Queries;
 using Ordering.Domain.OrderAggregate;
 using Ordering.Infrastructure;
 using Shared.Domain;
@@ -72,6 +73,16 @@ namespace API.Infrastructure.AutofacModules
                         _configuration.GetConnectionString("SqlServer")
                         )
                     )
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<OrderingQueries>()
+                .AsSelf()
+                .WithParameter(
+                    new TypedParameter(
+                        typeof(string),
+                        _configuration.GetConnectionString("SqlServer")
+                    )
+                )
                 .InstancePerLifetimeScope();
         }
 
