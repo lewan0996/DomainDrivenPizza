@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Ordering.Domain.OrderAggregate;
+using Shared.Domain.ValueObjects;
 
 namespace Ordering.Application.Queries.DTO
 {

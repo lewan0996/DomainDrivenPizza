@@ -7,6 +7,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Basket.Infrastructure;
+using Delivery.Infrastructure;
 using Menu.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -144,6 +145,17 @@ namespace API
                                 sqlOptions.MigrationsAssembly(typeof(OrderingDbContext).GetTypeInfo().Assembly.GetName()
                                     .Name);
                                 sqlOptions.MigrationsHistoryTable("__EFMigrationHistory", "Ordering");
+                            });
+                })
+                .AddDbContext<DeliveryDbContext>(options =>
+                {
+                    options
+                        .UseSqlServer(configuration.GetConnectionString("SqlServer"),
+                            sqlOptions =>
+                            {
+                                sqlOptions.MigrationsAssembly(typeof(DeliveryDbContext).GetTypeInfo().Assembly.GetName()
+                                    .Name);
+                                sqlOptions.MigrationsHistoryTable("__EFMigrationHistory", "Delivery");
                             });
                 });
 

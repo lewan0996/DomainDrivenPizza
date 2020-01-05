@@ -4,8 +4,8 @@ using AutoMapper;
 using MediatR;
 using Menu.Application.Queries.DTO;
 using Menu.Domain.ProductAggregate;
-using Shared.Application.Exceptions;
 using Shared.Domain;
+using Shared.Domain.Exceptions;
 
 namespace Menu.Application.PizzaApplications.CreatePizzaApplication
 {

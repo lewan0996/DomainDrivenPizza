@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Shared.Domain;
 
-namespace Ordering.Domain.OrderAggregate
+namespace Shared.Domain.ValueObjects
 {
     public class Address : ValueObject
     {

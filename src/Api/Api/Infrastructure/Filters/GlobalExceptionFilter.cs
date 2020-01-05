@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Shared.Application.Exceptions;
 using Shared.Domain;
+using Shared.Domain.Exceptions;
 
 namespace API.Infrastructure.Filters
 {

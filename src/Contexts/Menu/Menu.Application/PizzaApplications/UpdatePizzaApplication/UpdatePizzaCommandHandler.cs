@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Menu.Domain.ProductAggregate;
-using Shared.Application.Exceptions;
 using Shared.Domain;
+using Shared.Domain.Exceptions;
 
 namespace Menu.Application.PizzaApplications.UpdatePizzaApplication
 {

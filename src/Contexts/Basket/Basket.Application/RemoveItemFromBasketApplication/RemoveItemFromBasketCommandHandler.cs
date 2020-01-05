@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Basket.Domain.BasketAggregate;
 using MediatR;
-using Shared.Application.Exceptions;
 using Shared.Domain;
+using Shared.Domain.Exceptions;
 
 namespace Basket.Application.RemoveItemFromBasketApplication
 {

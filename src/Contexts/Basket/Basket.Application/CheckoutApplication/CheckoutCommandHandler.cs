@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Basket.Domain.BasketAggregate;
 using Basket.Domain.Exceptions;
 using MediatR;
-using Shared.Application.Exceptions;
 using Shared.Domain;
+using Shared.Domain.Exceptions;
 using Shared.IntegrationEvents.Basket;
 
 namespace Basket.Application.CheckoutApplication

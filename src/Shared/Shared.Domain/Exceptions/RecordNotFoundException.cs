@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shared.Application.Exceptions
+namespace Shared.Domain.Exceptions
 {
     public class RecordNotFoundException : Exception
     {

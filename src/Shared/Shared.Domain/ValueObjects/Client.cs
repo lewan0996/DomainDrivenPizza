@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Shared.Domain;
 
-namespace Ordering.Domain.OrderAggregate
+namespace Shared.Domain.ValueObjects
 {
     public class Client : ValueObject
     {

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Queries;
+#pragma warning disable 1591
 
 namespace API.Contexts.Ordering.Controllers
 {

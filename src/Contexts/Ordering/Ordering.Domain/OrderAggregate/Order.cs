@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Shared.Domain;
+using Shared.Domain.ValueObjects;
 
 namespace Ordering.Domain.OrderAggregate
 {

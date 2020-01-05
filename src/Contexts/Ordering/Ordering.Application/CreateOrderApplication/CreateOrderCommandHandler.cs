@@ -6,6 +6,7 @@ using MediatR;
 using Ordering.Application.Queries.DTO;
 using Ordering.Domain.OrderAggregate;
 using Shared.Domain;
+using Shared.Domain.ValueObjects;
 using Shared.IntegrationEvents.Ordering;
 
 namespace Ordering.Application.CreateOrderApplication
