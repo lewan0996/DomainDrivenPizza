@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DomainDrivenPizza.API</name>
+    </assembly>
+    <members>
+        <member name="T:API.Contexts.Basket.Controllers.BasketController">
+            <summary>
+            Contains basket related endpoints
+            </summary>
+        </member>
+        <member name="M:API.Contexts.Basket.Controllers.BasketController.#ctor(Basket.Application.Queries.BasketQueries,MediatR.IMediator,AutoMapper.IMapper)">
+            <inheritdoc />
+        </member>
+        <member name="M:API.Contexts.Basket.Controllers.BasketController.Get">
+            <summary>
+            Gets current user basket from browser cookie
+            </summary>
+            <returns>Current user's basket</returns>
+        </member>
+        <member name="M:API.Contexts.Basket.Controllers.BasketController.AddItemToBasket(API.Contexts.Basket.DTO.AddItemToBasketDTO)">
+            <summary>
+            Adds an item to the current user's basket
+            </summary>
+        </member>
+        <member name="M:API.Contexts.Basket.Controllers.BasketController.Checkout(API.Contexts.Basket.DTO.CheckoutDTO)">
+            <summary>
+            Creates a new order based on customer's basket
+            </summary>
+            <param name="dto">Checkout data</param>
+        </member>
+    </members>
+</doc>
