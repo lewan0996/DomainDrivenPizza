@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Delivery.Domain.OrderAggregate;
+using Delivery.Domain.Services;
 using Delivery.Domain.SupplierAggregate;
 using MediatR;
 using Shared.Domain;
@@ -14,17 +15,19 @@ namespace Delivery.Application.EventHandlers
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ISupplierRepository _supplierRepository;
+        private readonly OrderDeliveryService _orderDeliveryService;
 
-        public OrderShippedEventHandler(IRepository<Order> orderRepository, ISupplierRepository supplierRepository)
+        public OrderShippedEventHandler(IRepository<Order> orderRepository, ISupplierRepository supplierRepository, OrderDeliveryService orderDeliveryService)
         {
             _orderRepository = orderRepository;
             _supplierRepository = supplierRepository;
+            _orderDeliveryService = orderDeliveryService;
         }
 
         public async Task Handle(OrderShippedIntegrationEvent notification, CancellationToken cancellationToken)
         {
             var supplier = await _supplierRepository.GetFirstFreeSupplier(); // ensure that supplier is locked (increase transaction isolation level)
-            
+
             var order = new Order(
                 new Address(notification.City, notification.AddressLine1, notification.AddressLine2,
                     notification.ZipCode),
@@ -32,9 +35,11 @@ namespace Delivery.Application.EventHandlers
                     notification.PhoneNumber),
                 supplier.Id,
                 notification.Items.Select(i =>
-                    new OrderItem(i.ProductId, i.Quantity, i.UnitPrice)).ToList());
+                    new OrderItem(i.ProductId, i.Quantity, i.UnitPrice)
+                ).ToList(),
+                notification.OrderId);
 
-            order.StartDelivery();
+            await _orderDeliveryService.StartDeliveryAsync(order);
 
             await _orderRepository.AddAsync(order);
 

@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using API.Contexts.Basket.Controllers;
 using Basket.Application.AddItemToBasketApplication;
+using Delivery.Application.EventHandlers;
+using Delivery.Application.FinishDeliveryApplication;
 using Menu.Application.EventHandlers;
 using Menu.Application.ProductApplications.CreateProductApplication;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +36,8 @@ namespace API.Infrastructure
             {
                 typeof(CreateOrderCommand).Assembly,
                 typeof(CreateProductCommand).Assembly,
-                typeof(AddItemToBasketCommand).Assembly
+                typeof(AddItemToBasketCommand).Assembly,
+                typeof(FinishDeliveryCommand).Assembly
             };
         }
 
@@ -43,7 +46,8 @@ namespace API.Infrastructure
             return new[]
             {
                 typeof(BasketCheckedOutEventHandler).Assembly,
-                typeof(NewOrderCreatedEventHandler).Assembly
+                typeof(NewOrderCreatedEventHandler).Assembly,
+                typeof(OrderShippedEventHandler).Assembly
             };
         }
 

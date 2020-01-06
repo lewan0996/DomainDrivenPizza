@@ -3,6 +3,9 @@ using Autofac;
 using Basket.Application.Queries;
 using Basket.Domain.BasketAggregate;
 using Basket.Infrastructure;
+using Delivery.Application.Queries;
+using Delivery.Domain.Services;
+using Delivery.Domain.SupplierAggregate;
 using Menu.Application.Queries;
 using Menu.Domain.ProductAggregate;
 using Menu.Infrastructure;
@@ -11,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Ordering.Application.Queries;
 using Ordering.Domain.OrderAggregate;
-using Ordering.Infrastructure;
 using Shared.Domain;
 using Shared.Infrastructure;
 using Module = Autofac.Module;
@@ -51,8 +53,24 @@ namespace API.Infrastructure.AutofacModules
                 .As<IRepository<CustomerBasket>>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<Repository<Order, OrderingDbContext>>()
+            builder.RegisterType<Ordering.Infrastructure.OrderRepository>()
                 .As<IRepository<Order>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<Delivery.Infrastructure.OrderRepository>()
+                .As<IRepository<Delivery.Domain.OrderAggregate.Order>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<Delivery.Infrastructure.SupplierRepository>()
+                .As<ISupplierRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<Delivery.Infrastructure.SupplierRepository>()
+                .As<IRepository<Supplier>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<OrderDeliveryService>()
+                .AsSelf()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ProductQueries>()
@@ -84,13 +102,24 @@ namespace API.Infrastructure.AutofacModules
                     )
                 )
                 .InstancePerLifetimeScope();
+
+
+            builder.RegisterType<DeliveryQueries>()
+                .AsSelf()
+                .WithParameter(
+                    new TypedParameter(
+                        typeof(string),
+                        _configuration.GetConnectionString("SqlServer")
+                    )
+                )
+                .InstancePerLifetimeScope();
         }
 
         private DbContext[] GetAllDbContexts(IComponentContext c)
         {
             var dbContextTypes = AssemblyExtensions.GetDbContextTypes();
 
-            return dbContextTypes.Select(t => (DbContext) c.Resolve(t)).ToArray();
+            return dbContextTypes.Select(t => (DbContext)c.Resolve(t)).ToArray();
         }
     }
 }

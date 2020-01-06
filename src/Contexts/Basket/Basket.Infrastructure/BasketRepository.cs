@@ -12,9 +12,9 @@ namespace Basket.Infrastructure
         {
         }
 
-        public override async Task<CustomerBasket> GetByIdAsync(int id)
+        public override Task<CustomerBasket> GetByIdAsync(int id)
         {
-            return await DbContext.Baskets
+            return DbContext.Baskets
                 .Include(b => b.Items)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }

@@ -13,9 +13,9 @@ namespace Menu.Infrastructure.Repositories
         {
         }
 
-        public override async Task<Pizza> GetByIdAsync(int id)
+        public override Task<Pizza> GetByIdAsync(int id)
         {
-            return await DbContext.Pizzas
+            return DbContext.Pizzas
                 .Include(p => p.Ingredients)
                 .ThenInclude(pi => pi.Ingredient)
                 .FirstOrDefaultAsync(p => p.Id == id);

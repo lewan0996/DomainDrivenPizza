@@ -37,5 +37,6 @@ namespace Shared.Infrastructure
         }
 
         public IUnitOfWork UnitOfWork { get; }
+
     }
 }

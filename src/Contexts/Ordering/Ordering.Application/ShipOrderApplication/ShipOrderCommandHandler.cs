@@ -45,7 +45,8 @@ namespace Ordering.Application.ShipOrderApplication
                 order.Items.Select(oi => 
                         // ReSharper disable once PossibleInvalidOperationException Aggregate invariant ensures that all prices are set.
                         new ValidatedOrderItemInfo(oi.ProductId, oi.Quantity, oi.UnitPrice.Value))
-                    .ToList()
+                    .ToList(),
+                order.Id
             );
 
             await _mediator.Publish(orderShippedIntegrationEvent, cancellationToken);

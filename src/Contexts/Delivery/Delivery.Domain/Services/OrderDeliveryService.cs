@@ -15,7 +15,7 @@ namespace Delivery.Domain.Services
             _supplierRepository = supplierRepository;
         }
 
-        public async Task StartDelivery(Order order)
+        public async Task StartDeliveryAsync(Order order)
         {
             var supplier = await _supplierRepository.GetByIdAsync(order.SupplierId);
 
@@ -26,6 +26,19 @@ namespace Delivery.Domain.Services
 
             order.StartDelivery();
             supplier.StartDelivery();
+        }
+
+        public async Task FinishDeliveryAsync(Order order)
+        {
+            var supplier = await _supplierRepository.GetByIdAsync(order.SupplierId);
+
+            if (supplier == null)
+            {
+                throw new RecordNotFoundException(order.SupplierId, nameof(Supplier));
+            }
+
+            order.FinishDelivery();
+            supplier.FinishDelivery();
         }
     }
 }

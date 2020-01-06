@@ -1,7 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Queries;
+using Ordering.Application.ShipOrderApplication;
+
 #pragma warning disable 1591
 
 namespace API.Contexts.Ordering.Controllers
@@ -11,10 +14,12 @@ namespace API.Contexts.Ordering.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly OrderingQueries _orderingQueries;
+        private readonly IMediator _mediator;
 
-        public OrdersController(OrderingQueries orderingQueries)
+        public OrdersController(OrderingQueries orderingQueries, IMediator mediator)
         {
             _orderingQueries = orderingQueries;
+            _mediator = mediator;
         }
 
         [HttpGet("{email}")]
@@ -28,6 +33,15 @@ namespace API.Contexts.Ordering.Controllers
             }
 
             return Ok(orders);
+        }
+
+        [HttpPost("ship/{id}")]
+        public async Task<IActionResult> ShipOrder(int id)
+        {
+            var shipOrderCommand = new ShipOrderCommand(id);
+            await _mediator.Send(shipOrderCommand);
+
+            return NoContent();
         }
     }
 }

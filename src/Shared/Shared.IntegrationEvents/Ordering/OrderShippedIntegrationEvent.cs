@@ -6,6 +6,7 @@ namespace Shared.IntegrationEvents.Ordering
 {
     public class OrderShippedIntegrationEvent : INotification
     {
+        public int OrderId { get; }
         public string City { get; }
         public string AddressLine1 { get; }
         public string AddressLine2 { get; }
@@ -16,7 +17,7 @@ namespace Shared.IntegrationEvents.Ordering
         public string PhoneNumber { get; }
         public List<ValidatedOrderItemInfo> Items { get; }
 
-        public OrderShippedIntegrationEvent(string city, string addressLine1, string addressLine2, short zipCode, string firstName, string lastName, string emailAddress, string phoneNumber, List<ValidatedOrderItemInfo> items)
+        public OrderShippedIntegrationEvent(string city, string addressLine1, string addressLine2, short zipCode, string firstName, string lastName, string emailAddress, string phoneNumber, List<ValidatedOrderItemInfo> items, int orderId)
         {
             City = city;
             AddressLine1 = addressLine1;
@@ -27,6 +28,7 @@ namespace Shared.IntegrationEvents.Ordering
             EmailAddress = emailAddress;
             PhoneNumber = phoneNumber;
             Items = items;
+            OrderId = orderId;
         }
     }
 }
