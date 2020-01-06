@@ -12,6 +12,8 @@ namespace Basket.Infrastructure.EntityTypeConfigurations
                 .HasForeignKey(bi => bi.BasketId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Ignore(b => b.DomainEvents);
         }
     }
 }

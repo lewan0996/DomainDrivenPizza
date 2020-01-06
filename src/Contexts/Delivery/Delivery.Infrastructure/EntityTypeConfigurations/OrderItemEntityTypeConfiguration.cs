@@ -10,6 +10,7 @@ namespace Delivery.Infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
             builder.ToTable("OrderItems");
+            builder.Ignore(oi => oi.DomainEvents);
         }
     }
 }

@@ -13,14 +13,11 @@ namespace Shared.Application.Behaviors
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
 
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly IIntegrationEventService _integrationEventService;
 
         public TransactionBehaviour(IUnitOfWork unitOfWork,
-            /*IIntegrationEventService orderingIntegrationEventService,*/
             ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentException(nameof(IUnitOfWork));
-            /*_integrationEventService = integrationEventService ?? throw new ArgumentException(nameof(integrationEventService));*/
             _logger = logger ?? throw new ArgumentException(nameof(ILogger));
         }
 
@@ -43,7 +40,7 @@ namespace Shared.Application.Behaviors
                     response = await next();
 
                     _logger.LogInformation("----- Commit transaction {TransactionId} for {CommandName}", transaction.Id, typeName);
-                    //await _integrationEventService.PublishEventsAsync();
+                    
                     await _unitOfWork.SaveEntitiesAsync();
                     await _unitOfWork.CommitTransactionAsync(transaction);
                 }

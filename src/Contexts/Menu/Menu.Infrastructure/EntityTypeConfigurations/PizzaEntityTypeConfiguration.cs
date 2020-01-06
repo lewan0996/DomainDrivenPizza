@@ -11,6 +11,7 @@ namespace Menu.Infrastructure.EntityTypeConfigurations
             base.Configure(builder);
 
             builder.Ignore(p => p.AvailableQuantity);
+            builder.Ignore(p => p.DomainEvents);
 
             //builder.HasData(SeedData.Pizzas); // there is a problem with OwnedTypes
         }

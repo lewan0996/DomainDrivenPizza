@@ -1,18 +1,18 @@
-﻿using MediatR;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Ordering.Domain.OrderAggregate;
 using Shared.Domain;
 using Shared.IntegrationEvents.Menu;
 
-namespace Ordering.Application.EventHandlers
+namespace Ordering.Application.IntegrationEventHandlers
 {
     // ReSharper disable once UnusedType.Global
-    public class OrderAcceptedEventHandler : INotificationHandler<OrderAcceptedIntegrationEvent>
+    public class OrderAcceptedIntegrationEventHandler : INotificationHandler<OrderAcceptedIntegrationEvent>
     {
         private readonly IRepository<Order> _orderRepository;
 
-        public OrderAcceptedEventHandler(IRepository<Order> orderRepository)
+        public OrderAcceptedIntegrationEventHandler(IRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }

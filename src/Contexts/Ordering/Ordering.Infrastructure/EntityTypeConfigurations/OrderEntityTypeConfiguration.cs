@@ -16,6 +16,7 @@ namespace Ordering.Infrastructure.EntityTypeConfigurations
             builder.OwnsOne(o => o.Client);
 
             builder.Property(o => o.Status).HasConversion<string>();
+            builder.Ignore(o => o.DomainEvents);
         }
     }
 }

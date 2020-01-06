@@ -3,13 +3,13 @@ using System.Linq;
 using System.Reflection;
 using API.Contexts.Basket.Controllers;
 using Basket.Application.AddItemToBasketApplication;
-using Delivery.Application.EventHandlers;
 using Delivery.Application.FinishDeliveryApplication;
-using Menu.Application.EventHandlers;
+using Delivery.Application.IntegrationEventHandlers;
+using Menu.Application.IntegrationEventHandlers;
 using Menu.Application.ProductApplications.CreateProductApplication;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Application.CreateOrderApplication;
-using Ordering.Application.EventHandlers;
+using Ordering.Application.IntegrationEventHandlers;
 using Shared.IntegrationEvents.Ordering;
 
 #pragma warning disable 1591
@@ -45,9 +45,9 @@ namespace API.Infrastructure
         {
             return new[]
             {
-                typeof(BasketCheckedOutEventHandler).Assembly,
-                typeof(NewOrderCreatedEventHandler).Assembly,
-                typeof(OrderShippedEventHandler).Assembly
+                typeof(BasketCheckedOutIntegrationEventHandler).Assembly,
+                typeof(NewOrderCreatedIntegrationEventHandler).Assembly,
+                typeof(OrderShippedIntegrationEventHandler).Assembly
             };
         }
 

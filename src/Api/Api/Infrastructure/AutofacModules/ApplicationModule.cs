@@ -6,6 +6,7 @@ using Basket.Infrastructure;
 using Delivery.Application.Queries;
 using Delivery.Domain.Services;
 using Delivery.Domain.SupplierAggregate;
+using MediatR;
 using Menu.Application.Queries;
 using Menu.Domain.ProductAggregate;
 using Menu.Infrastructure;
@@ -32,7 +33,7 @@ namespace API.Infrastructure.AutofacModules
         }
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(c => new EFUnitOfWork(
+            builder.Register(c => new EFUnitOfWork(c.Resolve<IMediator>(),
                     GetAllDbContexts(c)))
                 .As<IUnitOfWork>()
                 .InstancePerLifetimeScope();

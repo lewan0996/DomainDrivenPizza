@@ -5,14 +5,14 @@ using Ordering.Domain.OrderAggregate;
 using Shared.Domain;
 using Shared.IntegrationEvents.Menu;
 
-namespace Ordering.Application.EventHandlers
+namespace Ordering.Application.IntegrationEventHandlers
 {
     // ReSharper disable once UnusedType.Global
-    public class OrderRejectedEventHandler : INotificationHandler<OrderRejectedIntegrationEvent>
+    public class OrderRejectedIntegrationEventHandler : INotificationHandler<OrderRejectedIntegrationEvent>
     {
         private readonly IRepository<Order> _orderRepository;
 
-        public OrderRejectedEventHandler(IRepository<Order> orderRepository)
+        public OrderRejectedIntegrationEventHandler(IRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }

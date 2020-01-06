@@ -24,6 +24,7 @@ namespace Delivery.Infrastructure.EntityTypeConfigurations
             builder.OwnsOne(o => o.Address);
 
             builder.Property(o => o.Status).HasConversion<string>();
+            builder.Ignore(o => o.DomainEvents);
         }
     }
 }

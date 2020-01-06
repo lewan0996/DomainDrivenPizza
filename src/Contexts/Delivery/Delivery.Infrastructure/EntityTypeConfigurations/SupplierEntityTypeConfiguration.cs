@@ -20,6 +20,7 @@ namespace Delivery.Infrastructure.EntityTypeConfigurations
             idPropertyInfo.SetValue(seedData[1], 2);
 
             builder.HasData(seedData);
+            builder.Ignore(s => s.DomainEvents);
         }
     }
 }

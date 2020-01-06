@@ -24,6 +24,7 @@ namespace Menu.Infrastructure.EntityTypeConfigurations
 
             builder.Property(p => p.Type).HasConversion<string>();
             builder.HasKey(p => p.Id);
+            builder.Ignore(p => p.DomainEvents);
         }
     }
 }

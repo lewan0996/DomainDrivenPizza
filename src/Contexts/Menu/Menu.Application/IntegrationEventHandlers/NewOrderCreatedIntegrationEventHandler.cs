@@ -8,15 +8,15 @@ using Shared.Domain.Exceptions;
 using Shared.IntegrationEvents.Menu;
 using Shared.IntegrationEvents.Ordering;
 
-namespace Menu.Application.EventHandlers
+namespace Menu.Application.IntegrationEventHandlers
 {
     // ReSharper disable once UnusedType.Global
-    public class NewOrderCreatedEventHandler : INotificationHandler<NewOrderCreatedIntegrationEvent>
+    public class NewOrderCreatedIntegrationEventHandler : INotificationHandler<NewOrderCreatedIntegrationEvent>
     {
         private readonly IMediator _mediator;
         private readonly IRepository<Pizza> _pizzaRepository; //todo replace with product repository after TPT is introduced
 
-        public NewOrderCreatedEventHandler(IMediator mediator, IRepository<Pizza> pizzaRepository)
+        public NewOrderCreatedIntegrationEventHandler(IMediator mediator, IRepository<Pizza> pizzaRepository)
         {
             _mediator = mediator;
             _pizzaRepository = pizzaRepository;

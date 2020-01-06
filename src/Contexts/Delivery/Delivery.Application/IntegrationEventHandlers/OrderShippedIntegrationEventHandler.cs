@@ -9,15 +9,15 @@ using Shared.Domain;
 using Shared.Domain.ValueObjects;
 using Shared.IntegrationEvents.Ordering;
 
-namespace Delivery.Application.EventHandlers
+namespace Delivery.Application.IntegrationEventHandlers
 {
-    public class OrderShippedEventHandler : INotificationHandler<OrderShippedIntegrationEvent>
+    public class OrderShippedIntegrationEventHandler : INotificationHandler<OrderShippedIntegrationEvent>
     {
         private readonly IRepository<Order> _orderRepository;
         private readonly ISupplierRepository _supplierRepository;
         private readonly OrderDeliveryService _orderDeliveryService;
 
-        public OrderShippedEventHandler(IRepository<Order> orderRepository, ISupplierRepository supplierRepository, OrderDeliveryService orderDeliveryService)
+        public OrderShippedIntegrationEventHandler(IRepository<Order> orderRepository, ISupplierRepository supplierRepository, OrderDeliveryService orderDeliveryService)
         {
             _orderRepository = orderRepository;
             _supplierRepository = supplierRepository;

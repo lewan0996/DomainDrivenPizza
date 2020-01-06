@@ -6,13 +6,14 @@ using Shared.Domain;
 using Shared.Domain.Exceptions;
 using Shared.IntegrationEvents.Delivery;
 
-namespace Ordering.Application.EventHandlers
+namespace Ordering.Application.IntegrationEventHandlers
 {
-    public class OrderDeliveryFinishedEventHandler : INotificationHandler<OrderDeliveryFinishedIntegrationEvent>
+    // ReSharper disable once UnusedType.Global
+    public class OrderDeliveryFinishedIntegrationEventHandler : INotificationHandler<OrderDeliveryFinishedIntegrationEvent>
     {
         private readonly IRepository<Order> _orderRepository;
 
-        public OrderDeliveryFinishedEventHandler(IRepository<Order> orderRepository)
+        public OrderDeliveryFinishedIntegrationEventHandler(IRepository<Order> orderRepository)
         {
             _orderRepository = orderRepository;
         }

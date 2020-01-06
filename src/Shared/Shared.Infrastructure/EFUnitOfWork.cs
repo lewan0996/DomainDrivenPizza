@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Domain;
 
@@ -10,13 +11,16 @@ namespace Shared.Infrastructure
     {
         private readonly DbContext[] _contexts;
         private ITransaction _currentTransaction;
+        private IMediator _mediator;
 
-        public EFUnitOfWork(params DbContext[] contexts)
+        public EFUnitOfWork(IMediator mediator, params DbContext[] contexts)
         {
             if (contexts == null || !contexts.Any())
             {
                 throw new ArgumentException(nameof(contexts));
             }
+
+            _mediator = mediator;
             _contexts = contexts;
         }
         public async Task<ITransaction> BeginTransactionAsync()
@@ -30,6 +34,7 @@ namespace Shared.Infrastructure
 
         public async Task<int> SaveEntitiesAsync()
         {
+            await DispatchDomainEventsAsync();
             var saveChangesTasks = _contexts.Select(c => c.SaveChangesAsync());
             var rowsAffectedPerTask = await Task.WhenAll(saveChangesTasks);
 
@@ -77,6 +82,12 @@ namespace Shared.Infrastructure
         }
 
         public bool HasActiveTransaction => _currentTransaction != null;
+
+        private async Task DispatchDomainEventsAsync()
+        {
+            var domainEventTasks = _contexts.Select(c => _mediator.DispatchDomainEventsAsync(c));
+            await Task.WhenAll(domainEventTasks);
+        }
     }
 }
 

@@ -4,13 +4,13 @@ using MediatR;
 using Ordering.Application.CreateOrderApplication;
 using Shared.IntegrationEvents.Basket;
 
-namespace Ordering.Application.EventHandlers
+namespace Ordering.Application.IntegrationEventHandlers
 {
-    public class BasketCheckedOutEventHandler : INotificationHandler<BasketCheckedOutIntegrationEvent>
+    public class BasketCheckedOutIntegrationEventHandler : INotificationHandler<BasketCheckedOutIntegrationEvent>
     {
         private readonly IMediator _mediator;
 
-        public BasketCheckedOutEventHandler(IMediator mediator)
+        public BasketCheckedOutIntegrationEventHandler(IMediator mediator)
         {
             _mediator = mediator;
         }

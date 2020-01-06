@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Delivery.Domain.DomainEvents;
 using Shared.Domain;
 using Shared.Domain.ValueObjects;
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -15,7 +15,7 @@ namespace Delivery.Domain.OrderAggregate
         public Address Address { get; private set; }
         public Client Client { get; private set; }
         public int SupplierId { get; private set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; private set; }
         private List<OrderItem> _items;
         public IReadOnlyList<OrderItem> Items => _items;
 
@@ -43,6 +43,8 @@ namespace Delivery.Domain.OrderAggregate
             }
 
             Status = OrderStatus.InDelivery;
+
+            AddDomainEvent(new OrderShippedDomainEvent(this));
         }
 
         public void FinishDelivery()
